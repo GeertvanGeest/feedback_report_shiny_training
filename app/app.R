@@ -2,6 +2,7 @@ library(shiny)
 library(readxl)
 library(jsonlite)
 library(htmltools)
+library(munsell)
 
 source("generate_html_report.R")
 

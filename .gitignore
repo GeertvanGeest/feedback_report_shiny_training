@@ -1,3 +1,4 @@
 *.xlsx
 *.html
 .DS_Store
+site/
