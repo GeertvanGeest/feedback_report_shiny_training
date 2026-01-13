@@ -1,0 +1,78 @@
+---
+title: "Course feedback summary"
+format: 
+  html:
+    embed-resources: true
+execute:
+  echo: false
+  message: false
+  warning: false
+params:
+  feedback_file: "data/Introduction to Spatial Transcriptomics - December 2025.xlsx"
+  metadata_file: "data/question_metadata.json"
+  original_filename: NULL
+---
+
+```{r}
+library(readxl)
+library(jsonlite)
+source("plot_functions.R")
+```
+
+```{r}
+# Load feedback data and question metadata from parameters
+feedback_results <- read_xlsx(params$feedback_file)
+question_metadata <- fromJSON(params$metadata_file)
+```
+
+```{r}
+#| output: asis
+# Use original_filename if provided, otherwise extract from feedback_file
+if (!is.null(params$original_filename)) {
+  file_basename <- tools::file_path_sans_ext(params$original_filename)
+} else {
+  file_basename <- basename(params$feedback_file) |> tools::file_path_sans_ext()
+}
+
+cat("\n## ", file_basename, "\n")
+```
+
+```{r}
+#| output: asis
+#| results: asis
+
+# Loop through each question in the metadata
+for (i in 1:nrow(question_metadata$questions)) {
+  question <- question_metadata$questions[i, ]
+  variable <- question$question_text
+  
+  # Check if the column exists in the data
+  if (variable %in% colnames(feedback_results)) {
+    
+    # Print section header
+    cat("\n\n### ", question$question_text, "\n\n")
+    
+    # Generate appropriate visualization based on question type
+    if (question$question_type == "open") {
+      # Create table for open questions
+      print(answer_table(feedback_results, variable, question_metadata))
+    } else if (question$question_type == "multiple_select") {
+      # Bar chart for multiple select questions (semicolon-separated values)
+      print(bar_chart(feedback_results, variable, question_metadata))
+    } else if (question$question_type == "multiple_choice") {
+      # Check if ordinal - use bar chart for ordinal data
+      if (question$is_ordinal) {
+        # Bar chart for ordinal questions to preserve order
+        print(bar_chart(feedback_results, variable, question_metadata))
+      } else {
+        # Pie chart for non-ordinal categorical questions
+        print(pie_chart(feedback_results, variable, question_metadata))
+      }
+    }
+    
+    cat("\n\n")
+  }
+}
+
+
+```

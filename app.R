@@ -1,0 +1,191 @@
+library(shiny)
+library(quarto)
+library(readxl)
+library(jsonlite)
+
+# UI Definition
+ui <- fluidPage(
+  titlePanel("Course Feedback Report Generator"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      h4("Configuration"),
+      
+      # Dropdown for question metadata versions
+      selectInput(
+        "metadata_version",
+        "Question Metadata Version:",
+        choices = NULL  # Will be populated dynamically
+      ),
+      
+      # File upload for Excel feedback file
+      fileInput(
+        "feedback_file",
+        "Upload Feedback Excel File:",
+        accept = c(".xlsx", ".xls")
+      ),
+      
+      hr(),
+      
+      # Generate report button
+      actionButton(
+        "generate",
+        "Generate Report",
+        class = "btn-primary",
+        width = "100%"
+      ),
+      
+      br(), br(),
+      
+      # Download button (initially hidden)
+      uiOutput("download_ui"),
+      
+      br(),
+      
+      # Status messages
+      uiOutput("status_message")
+    ),
+    
+    mainPanel(
+      h4("Instructions"),
+      tags$ol(
+        tags$li("Select the appropriate question metadata version from the dropdown"),
+        tags$li("Upload your feedback Excel file"),
+        tags$li("Click 'Generate Report' to create the HTML report"),
+        tags$li("Download the generated report when ready")
+      ),
+      
+      hr(),
+      
+      h4("Available Metadata Versions"),
+      tableOutput("metadata_info")
+    )
+  )
+)
+
+# Server Logic
+server <- function(input, output, session) {
+  
+  # Reactive values to store state
+  rv <- reactiveValues(
+    report_path = NULL,
+    report_ready = FALSE
+  )
+  
+  # Scan for available metadata files on startup
+  observe({
+    metadata_files <- list.files("data", pattern = "question_metadata.*\\.json$", full.names = TRUE)
+    
+    if (length(metadata_files) == 0) {
+      showNotification("No metadata files found in data/ directory", type = "error")
+      return()
+    }
+    
+    # Create friendly names (remove path and extension)
+    names(metadata_files) <- basename(metadata_files)
+    
+    updateSelectInput(session, "metadata_version", choices = metadata_files)
+  })
+  
+  # Display metadata information
+  output$metadata_info <- renderTable({
+    metadata_files <- list.files("data", pattern = "question_metadata.*\\.json$", full.names = TRUE)
+    
+    if (length(metadata_files) == 0) return(NULL)
+    
+    data.frame(
+      File = basename(metadata_files),
+      Path = metadata_files
+    )
+  })
+  
+  # Generate report when button is clicked
+  observeEvent(input$generate, {
+    # Validate inputs
+    req(input$feedback_file)
+    req(input$metadata_version)
+    
+    # Show progress
+    withProgress(message = 'Generating report...', value = 0, {
+      
+      tryCatch({
+        # Get uploaded file path
+        feedback_path <- input$feedback_file$datapath
+        original_filename <- input$feedback_file$name
+        
+        incProgress(0.2, detail = "Loading data")
+        
+        # Create output filename based on original filename
+        output_basename <- paste0(tools::file_path_sans_ext(original_filename), ".html")
+        output_path <- file.path(tempdir(), output_basename)
+        
+        incProgress(0.4, detail = "Rendering report")
+        
+        # Render the document
+        quarto_render(
+          input = "summary_feedback_form.qmd",
+          execute_params = list(
+            feedback_file = feedback_path,
+            metadata_file = input$metadata_version,
+            original_filename = original_filename
+          ),
+          output_file = output_basename
+        )
+        
+        incProgress(0.8, detail = "Finalizing")
+        
+        # Move rendered file to temp directory with correct name
+        if (file.exists(output_basename)) {
+          file.rename(output_basename, output_path)
+        }
+        
+        # Store the report path
+        rv$report_path <- output_path
+        rv$report_ready <- TRUE
+        
+        incProgress(1.0, detail = "Complete!")
+        
+        showNotification("Report generated successfully!", type = "message", duration = 5)
+        
+      }, error = function(e) {
+        showNotification(paste("Error generating report:", e$message), type = "error", duration = 10)
+        rv$report_ready <- FALSE
+      })
+    })
+  })
+  
+  # Show download button only when report is ready
+  output$download_ui <- renderUI({
+    if (rv$report_ready) {
+      downloadButton("download_report", "Download Report", class = "btn-success", width = "100%")
+    }
+  })
+  
+  # Status message
+  output$status_message <- renderUI({
+    if (rv$report_ready) {
+      tags$div(
+        class = "alert alert-success",
+        icon("check-circle"),
+        " Report is ready for download!"
+      )
+    }
+  })
+  
+  # Download handler
+  output$download_report <- downloadHandler(
+    filename = function() {
+      if (!is.null(input$feedback_file)) {
+        paste0(tools::file_path_sans_ext(input$feedback_file$name), ".html")
+      } else {
+        "feedback_report.html"
+      }
+    },
+    content = function(file) {
+      file.copy(rv$report_path, file)
+    }
+  )
+}
+
+# Run the app
+shinyApp(ui = ui, server = server)
