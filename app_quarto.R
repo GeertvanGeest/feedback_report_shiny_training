@@ -1,9 +1,7 @@
 library(shiny)
+library(quarto)
 library(readxl)
 library(jsonlite)
-library(htmltools)
-
-source("generate_html_report.R")
 
 # UI Definition
 ui <- fluidPage(
@@ -60,14 +58,7 @@ ui <- fluidPage(
       hr(),
       
       h4("Available Metadata Versions"),
-      tableOutput("metadata_info"),
-      
-      hr(),
-      
-      tags$div(
-        class = "alert alert-info",
-        tags$strong("Note:"), " This version generates HTML reports programmatically and is compatible with WebAssembly/Shinylive deployment."
-      )
+      tableOutput("metadata_info")
     )
   )
 )
@@ -128,19 +119,25 @@ server <- function(input, output, session) {
         output_basename <- paste0(tools::file_path_sans_ext(original_filename), ".html")
         output_path <- file.path(tempdir(), output_basename)
         
-        incProgress(0.4, detail = "Generating visualizations")
+        incProgress(0.4, detail = "Rendering report")
         
-        # Generate HTML report programmatically
-        html_doc <- generate_html_report(
-          feedback_file = feedback_path,
-          metadata_file = input$metadata_version,
-          original_filename = original_filename
+        # Render the document
+        quarto_render(
+          input = "summary_feedback_form.qmd",
+          execute_params = list(
+            feedback_file = feedback_path,
+            metadata_file = input$metadata_version,
+            original_filename = original_filename
+          ),
+          output_file = output_basename
         )
         
-        incProgress(0.8, detail = "Saving report")
+        incProgress(0.8, detail = "Finalizing")
         
-        # Save the HTML document
-        save_html(html_doc, file = output_path)
+        # Move rendered file to temp directory with correct name
+        if (file.exists(output_basename)) {
+          file.rename(output_basename, output_path)
+        }
         
         # Store the report path
         rv$report_path <- output_path
