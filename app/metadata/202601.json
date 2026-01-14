@@ -1,4 +1,5 @@
 {
+    "description": "Question metadata January 2026",
     "questions": [
         {
             "variable_name": "course_organisation",
@@ -139,6 +140,25 @@
                 "Yes",
                 "No",
                 "Maybe"
+            ]
+        },
+        {
+            "variable_name": "interest_omics",
+            "question_text": "OMICS data analysis",
+            "question_type": "multiple_select",
+            "is_ordinal": false,
+            "possible_answers": [
+                "Databases and sequence analysis tools",
+                "NGS data analysis",
+                "Variant analysis",
+                "Long read sequencing analysis",
+                "RNA-Seq analysis",
+                "Single cell analysis",
+                "Enrichment analysis",
+                "Metagenomics",
+                "Comparative Genomics & phylogenetics",
+                "Data Integration",
+                "Computer-aided drug Design"
             ]
         }
     ]

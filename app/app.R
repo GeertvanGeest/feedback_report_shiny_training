@@ -61,14 +61,7 @@ ui <- fluidPage(
       hr(),
       
       h4("Available Metadata Versions"),
-      tableOutput("metadata_info"),
-      
-      hr(),
-      
-      tags$div(
-        class = "alert alert-info",
-        tags$strong("Note:"), " This version generates HTML reports programmatically and is compatible with WebAssembly/Shinylive deployment."
-      )
+      tableOutput("metadata_info")
     )
   )
 )
@@ -84,29 +77,36 @@ server <- function(input, output, session) {
   
   # Scan for available metadata files on startup
   observe({
-    metadata_files <- list.files("data", pattern = "question_metadata.*\\.json$", full.names = TRUE)
+    metadata_files <- list.files("metadata", pattern = "\\.json$", full.names = TRUE)
     
     if (length(metadata_files) == 0) {
-      showNotification("No metadata files found in data/ directory", type = "error")
+      showNotification("No metadata files found in metadata/ directory", type = "error")
       return()
     }
     
     # Create friendly names (remove path and extension)
-    names(metadata_files) <- basename(metadata_files)
+    names(metadata_files) <- tools::file_path_sans_ext(basename(metadata_files))
     
     updateSelectInput(session, "metadata_version", choices = metadata_files)
   })
   
   # Display metadata information
   output$metadata_info <- renderTable({
-    metadata_files <- list.files("data", pattern = "question_metadata.*\\.json$", full.names = TRUE)
+    metadata_files <- list.files("metadata", pattern = "\\.json$", full.names = TRUE)
     
     if (length(metadata_files) == 0) return(NULL)
     
-    data.frame(
-      File = basename(metadata_files),
-      Path = metadata_files
-    )
+    # Read descriptions from JSON files
+    metadata_info <- lapply(metadata_files, function(file) {
+      json_content <- fromJSON(file)
+      data.frame(
+        Name = tools::file_path_sans_ext(basename(file)),
+        Description = if (!is.null(json_content$description)) json_content$description else "No description",
+        stringsAsFactors = FALSE
+      )
+    })
+    
+    do.call(rbind, metadata_info)
   })
   
   # Generate report when button is clicked
