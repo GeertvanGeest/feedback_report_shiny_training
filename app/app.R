@@ -187,7 +187,8 @@ server <- function(input, output, session) {
     },
     content = function(file) {
       file.copy(rv$report_path, file)
-    }
+    },
+    contentType = "text/html"
   )
 }
 

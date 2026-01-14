@@ -9,9 +9,9 @@ library(base64enc)
 source("plot_functions.R")
 
 # Function to convert ggplot to base64 PNG
-ggplot_to_base64 <- function(plot, width = 6, height = 4.5) {
+ggplot_to_base64 <- function(plot, width = 6, height = 4.5, dpi = 150) {
   tmp <- tempfile(fileext = ".png")
-  ggsave(tmp, plot, width = width, height = height, dpi = 96)
+  ggsave(tmp, plot, width = width, height = height, dpi = dpi)
   img_data <- base64enc::base64encode(tmp)
   unlink(tmp)
   paste0("data:image/png;base64,", img_data)
