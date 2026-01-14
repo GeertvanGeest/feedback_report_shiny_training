@@ -60,9 +60,14 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
   # Add course title
   content_sections[[1]] <- h2(file_basename)
   
+  # Add Survey Overview section header
+  content_sections[[length(content_sections) + 1]] <- h3("Survey Overview")
+  
   # Calculate response statistics
   n_responses <- nrow(feedback_results)
-  content_sections[[length(content_sections) + 1]] <- p(strong(paste0("Number of responses: ", n_responses)))
+  content_sections[[length(content_sections) + 1]] <- p(
+    tags$strong("Number of responses:"), " ", n_responses
+  )
   
   # Process Start time if available
   if ("Start time" %in% colnames(feedback_results)) {
@@ -77,13 +82,14 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
       # Calculate time spread
       min_time <- min(start_times$datetime)
       max_time <- max(start_times$datetime)
-      time_spread <- paste0(
-        "Survey period: ",
+      time_spread_text <- paste0(
         format(min_time, "%d.%m.%Y %H:%M"),
         " to ",
         format(max_time, "%d.%m.%Y %H:%M")
       )
-      content_sections[[length(content_sections) + 1]] <- p(time_spread)
+      content_sections[[length(content_sections) + 1]] <- p(
+        tags$strong("Survey period:"), " ", time_spread_text
+      )
       
       # Create histogram showing distribution of start times
       if (nrow(start_times) > 1) {

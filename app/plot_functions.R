@@ -52,7 +52,7 @@ pie_chart <- function(feedback_results, variable, question_metadata) {
   # Create pie chart with appealing colors
   # Use full plot_data for legend, but only non-zero for actual pie
   p <- ggplot(plot_data, aes(x = "", y = n, fill = .data[[variable]])) +
-    geom_bar(stat = "identity", width = 1, color = "white", size = 1) +
+    geom_bar(stat = "identity", width = 1, color = "white", linewidth = 1) +
     coord_polar("y", start = 0) +
     geom_text(data = plot_data_display,
               aes(label = paste0(round(percentage, 1), "%")),
