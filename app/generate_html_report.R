@@ -91,7 +91,7 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
         img_base64 <- ggplot_to_base64(plot, width = 6, height = 4.5)
         content_sections[[length(content_sections) + 1]] <- tags$img(
           src = img_base64,
-          style = "max-width: 100%; height: auto;"
+          style = "max-width: 600px; width: 100%; height: auto;"
         )
         
       } else if (question$question_type == "multiple_choice" && !question$is_ordinal) {
@@ -100,7 +100,7 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
         img_base64 <- ggplot_to_base64(plot, width = 6, height = 4.5)
         content_sections[[length(content_sections) + 1]] <- tags$img(
           src = img_base64,
-          style = "max-width: 100%; height: auto;"
+          style = "max-width: 600px; width: 100%; height: auto;"
         )
       }
       
