@@ -5,6 +5,7 @@ library(dplyr)
 library(readxl)
 library(jsonlite)
 library(base64enc)
+library(lubridate)
 
 source("plot_functions.R")
 
@@ -58,6 +59,65 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
   
   # Add course title
   content_sections[[1]] <- h2(file_basename)
+  
+  # Calculate response statistics
+  n_responses <- nrow(feedback_results)
+  content_sections[[length(content_sections) + 1]] <- p(strong(paste0("Number of responses: ", n_responses)))
+  
+  # Process Start time if available
+  if ("Start time" %in% colnames(feedback_results)) {
+    start_times <- feedback_results %>%
+      filter(!is.na(`Start time`)) %>%
+      mutate(
+        datetime = as.POSIXct(`Start time`)
+      ) %>%
+      filter(!is.na(datetime))
+    
+    if (nrow(start_times) > 0) {
+      # Calculate time spread
+      min_time <- min(start_times$datetime)
+      max_time <- max(start_times$datetime)
+      time_spread <- paste0(
+        "Survey period: ",
+        format(min_time, "%d.%m.%Y %H:%M"),
+        " to ",
+        format(max_time, "%d.%m.%Y %H:%M")
+      )
+      content_sections[[length(content_sections) + 1]] <- p(time_spread)
+      
+      # Create histogram showing distribution of start times
+      if (nrow(start_times) > 1) {
+        # Add date for grouping
+        start_times <- start_times %>%
+          mutate(date = as.Date(datetime))
+        
+        # Create histogram binned by day
+        time_plot <- ggplot(start_times, aes(x = datetime)) +
+          geom_histogram(fill = "#4E79A7", alpha = 1, color = "white", binwidth = 86400) +
+          labs(x = "Date", y = "Count") +
+          scale_x_datetime(date_breaks = "1 day", date_labels = "%d.%m.%Y") +
+          theme_minimal() +
+          theme(
+            axis.text.y = element_text(size = 12),
+            axis.text.x = element_text(size = 11, angle = 45, hjust = 1),
+            axis.title.x = element_text(size = 12),
+            axis.title.y = element_text(size = 12),
+            panel.grid.major.y = element_blank(),
+            panel.grid.minor = element_blank()
+          ) +
+          scale_y_continuous(expand = expansion(mult = c(0, 0.15)))
+        
+        img_base64 <- ggplot_to_base64(time_plot, width = 8, height = 3)
+        content_sections[[length(content_sections) + 1]] <- tags$img(
+          src = img_base64,
+          style = "max-width: 800px; width: 100%; height: auto;"
+        )
+        content_sections[[length(content_sections) + 1]] <- br()
+      }
+    }
+  }
+  
+  content_sections[[length(content_sections) + 1]] <- hr()
   
   # Process each question
   for (i in 1:nrow(question_metadata$questions)) {
