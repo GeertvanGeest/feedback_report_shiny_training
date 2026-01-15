@@ -8,6 +8,7 @@ source("generate_html_report.R")
 
 # UI Definition
 ui <- fluidPage(
+  title = "Feedback report generator",
   titlePanel("Course Feedback Report Generator"),
   
   sidebarLayout(
