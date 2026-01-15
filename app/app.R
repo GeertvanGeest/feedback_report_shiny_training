@@ -9,7 +9,19 @@ source("generate_html_report.R")
 # UI Definition
 ui <- fluidPage(
   title = "Feedback report generator",
-  titlePanel("Course Feedback Report Generator"),
+  titlePanel(
+    div(
+      style = "display: flex; justify-content: space-between; align-items: center;",
+      "Course Feedback Report Generator",
+      tags$a(
+        href = "https://github.com/GeertvanGeest/feedback_report_shiny_training",
+        target = "_blank",
+        icon("github", lib = "font-awesome"),
+        "GitHub",
+        style = "font-size: 16px; text-decoration: none;"
+      )
+    )
+  ),
   
   sidebarLayout(
     sidebarPanel(
