@@ -6,14 +6,33 @@ library(knitr)
 library(kableExtra)
 library(ggthemes)
 
+# Helper function to find a question in metadata by question_text
+find_question_in_metadata <- function(question_metadata, variable) {
+  for (i in seq_along(question_metadata$sections$title)) {
+    section_questions <- question_metadata$sections$questions[[i]]
+    for (j in seq_len(nrow(section_questions))) {
+      if (section_questions$question_text[j] == variable) {
+        return(list(
+          question_text = section_questions$question_text[j],
+          question_type = section_questions$question_type[j],
+          is_ordinal = section_questions$is_ordinal[j],
+          possible_answers = section_questions$possible_answers[[j]]
+        ))
+      }
+    }
+  }
+  return(NULL)
+}
+
 # Create a pie chart for multiple choice questions
-pie_chart <- function(feedback_results, variable, question_metadata) {
+pie_chart <- function(feedback_results, variable, question_metadata, metadata_text = NULL) {
   
-  # Find the matching question in metadata
-  question <- question_metadata$questions[question_metadata$questions$question_text == variable, ]
+  # Find the matching question in metadata (use metadata_text if provided)
+  lookup_text <- if (!is.null(metadata_text)) metadata_text else variable
+  question <- find_question_in_metadata(question_metadata, lookup_text)
   
-  possible_answers <- if (nrow(question) > 0 && !is.null(question$possible_answers[[1]])) {
-    question$possible_answers[[1]]
+  possible_answers <- if (!is.null(question) && !is.null(question$possible_answers)) {
+    question$possible_answers
   } else {
     NULL
   }
@@ -60,32 +79,27 @@ pie_chart <- function(feedback_results, variable, question_metadata) {
     labs(fill = "") +
     theme_void() +
     theme(legend.position = "right",
-          legend.text = element_text(size = 12))
-  
-  # Add color scale with all possible answers to ensure legend shows all options with colors
-  if (!is.null(possible_answers)) {
-    p <- p + scale_fill_tableau(palette = "Nuriel Stone", drop = FALSE)
-  } else {
-    p <- p + scale_fill_tableau(palette = "Nuriel Stone", drop = FALSE)
-  }
+          legend.text = element_text(size = 12)) +
+    scale_fill_tableau(palette = "Nuriel Stone", drop = FALSE)
   
   p
 }
 
 # Create a horizontal bar chart for multiple choice and multiple select questions
-bar_chart <- function(feedback_results, variable, question_metadata) {
+bar_chart <- function(feedback_results, variable, question_metadata, metadata_text = NULL) {
   
-  # Find the matching question in metadata
-  question <- question_metadata$questions[question_metadata$questions$question_text == variable, ]
+  # Find the matching question in metadata (use metadata_text if provided)
+  lookup_text <- if (!is.null(metadata_text)) metadata_text else variable
+  question <- find_question_in_metadata(question_metadata, lookup_text)
   
-  possible_answers <- if (nrow(question) > 0 && !is.null(question$possible_answers[[1]])) {
-    question$possible_answers[[1]]
+  possible_answers <- if (!is.null(question) && !is.null(question$possible_answers)) {
+    question$possible_answers
   } else {
     NULL
   }
   
   # Check if this is a multiple_select question
-  is_multiple_select <- nrow(question) > 0 && question$question_type == "multiple_select"
+  is_multiple_select <- !is.null(question) && question$question_type == "multiple_select"
   
   if (is_multiple_select) {
     # Split semicolon-separated values and count each answer
@@ -170,29 +184,4 @@ bar_chart <- function(feedback_results, variable, question_metadata) {
   }
 }
 
-# Create a table for open-ended questions
-answer_table <- function(feedback_results, variable, question_metadata) {
-  
-  # Find the matching question in metadata
-  question <- question_metadata$questions[question_metadata$questions$question_text == variable, ]
-  
-  # Use question_text as caption
-  table_caption <- question$question_text
-  
-  # Extract non-empty responses
-  table_data <- feedback_results %>%
-    select(all_of(variable)) %>%
-    filter(!is.na(.data[[variable]]), .data[[variable]] != "") %>%
-    mutate(Response_ID = row_number()) %>%
-    select(Response_ID, Answer = all_of(variable))
-  
-  # Create formatted table
-  table_data %>%
-    kable(caption = table_caption, 
-          format = "html",
-          col.names = c("Response ID", "Answer")) %>%
-    kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
-                  full_width = FALSE) %>%
-    column_spec(1, bold = TRUE, width = "8em") %>%
-    column_spec(2, width = "40em")
-}
+

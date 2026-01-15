@@ -6,6 +6,7 @@ library(readxl)
 library(jsonlite)
 library(base64enc)
 library(lubridate)
+library(stringr)
 
 source("plot_functions.R")
 
@@ -57,11 +58,11 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
   # Build HTML content
   content_sections <- list()
   
-  # Add course title
-  content_sections[[1]] <- h2(file_basename)
-  
   # Add Survey Overview section header
-  content_sections[[length(content_sections) + 1]] <- h3("Survey Overview")
+   content_sections[[1]] <- h2("Survey Overview")
+
+  # Add course title
+   content_sections[[length(content_sections) + 1]] <- p(tags$strong("Feedback of:"), " ", file_basename)
   
   # Calculate response statistics
   n_responses <- nrow(feedback_results)
@@ -125,53 +126,96 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
   
   content_sections[[length(content_sections) + 1]] <- hr()
   
-  # Process each question
-  for (i in 1:nrow(question_metadata$questions)) {
-    question <- question_metadata$questions[i, ]
-    variable <- question$question_text
+  # Helper function to normalize text for matching (handle different dash/ampersand encodings)
+  normalize <- function(x) {
+    x %>%
+      str_replace_all("[\u2013\u2014\u2212\\-]", "-") %>%  # normalize dashes
+      str_replace_all("\u0026|&", "&") %>%  # normalize ampersands
+      str_squish()  # normalize whitespace
+  }
+  
+  # Helper to add content sections
+  add_content <- function(element) {
+    content_sections[[length(content_sections) + 1]] <<- element
+  }
+  
+  # Process each section
+  for (section_idx in seq_along(question_metadata$sections$title)) {
+    section_title <- question_metadata$sections$title[section_idx]
+    section_description <- question_metadata$sections$description[section_idx]
+    section_questions <- question_metadata$sections$questions[[section_idx]]
     
-    # Check if column exists
-    if (variable %in% colnames(feedback_results)) {
+    # Add section header
+    add_content(h2(section_title))
+    
+    # Add section description if present and not empty
+    if (!is.null(section_description) && section_description != "") {
+      add_content(p(tags$em(section_description)))
+    }
+    
+    # Process each question in the section
+    for (q_idx in seq_len(nrow(section_questions))) {
+      question_text <- section_questions$question_text[q_idx]
+      question_type <- section_questions$question_type[q_idx]
+      is_ordinal <- section_questions$is_ordinal[q_idx]
       
-      # Add question header
-      content_sections[[length(content_sections) + 1]] <- h3(question$question_text)
+      # Find matching column
+      norm_question <- normalize(question_text)
+      norm_columns <- normalize(colnames(feedback_results))
+      matched_idx <- which(norm_columns == norm_question)
       
-      # Generate appropriate visualization
-      if (question$question_type == "open") {
-        # Create table for open questions
-        table_data <- feedback_results %>%
-          select(all_of(variable)) %>%
-          filter(!is.na(.data[[variable]]), .data[[variable]] != "") %>%
-          mutate(Response_ID = row_number()) %>%
-          select(Response_ID, Answer = all_of(variable))
-        
-        content_sections[[length(content_sections) + 1]] <- df_to_html_table(
-          table_data, 
-          caption = question$question_text
-        )
-        
-      } else if (question$question_type == "multiple_select" || 
-                 (question$question_type == "multiple_choice" && question$is_ordinal)) {
-        # Bar chart
-        plot <- bar_chart(feedback_results, variable, question_metadata)
-        img_base64 <- ggplot_to_base64(plot, width = 6, height = 4.5)
-        content_sections[[length(content_sections) + 1]] <- tags$img(
-          src = img_base64,
-          style = "max-width: 600px; width: 100%; height: auto;"
-        )
-        
-      } else if (question$question_type == "multiple_choice" && !question$is_ordinal) {
-        # Pie chart
-        plot <- pie_chart(feedback_results, variable, question_metadata)
-        img_base64 <- ggplot_to_base64(plot, width = 6, height = 4.5)
-        content_sections[[length(content_sections) + 1]] <- tags$img(
-          src = img_base64,
-          style = "max-width: 600px; width: 100%; height: auto;"
-        )
+      # If no exact match, try prefix match for truncated columns (min 30 chars)
+      if (length(matched_idx) == 0 && nchar(norm_question) > 30) {
+        matched_idx <- which(str_starts(norm_columns, str_sub(norm_question, 1, 30)))
       }
       
-      # Add spacing
-      content_sections[[length(content_sections) + 1]] <- br()
+      # Check if we found a matching column
+      if (length(matched_idx) > 0) {
+        matched_column <- colnames(feedback_results)[matched_idx[1]]
+        
+        # Add question header
+        add_content(h3(question_text))
+        
+        # Generate appropriate visualization
+        if (question_type == "open") {
+          # Create table for open questions
+          table_data <- feedback_results %>%
+            select(all_of(matched_column)) %>%
+            filter(!is.na(.data[[matched_column]]), .data[[matched_column]] != "") %>%
+            mutate(Response_ID = row_number()) %>%
+            select(Response_ID, Answer = all_of(matched_column))
+          
+          add_content(df_to_html_table(table_data, caption = question_text))
+          
+        } else if (question_type == "multiple_select" || 
+                   (question_type == "multiple_choice" && is_ordinal)) {
+          # Bar chart
+          plot <- bar_chart(feedback_results, matched_column, question_metadata, question_text)
+          add_content(tags$img(
+            src = ggplot_to_base64(plot, width = 6, height = 4.5),
+            style = "max-width: 600px; width: 100%; height: auto;"
+          ))
+          
+        } else if (question_type == "multiple_choice" && !is_ordinal) {
+          # Pie chart
+          plot <- pie_chart(feedback_results, matched_column, question_metadata, question_text)
+          add_content(tags$img(
+            src = ggplot_to_base64(plot, width = 6, height = 4.5),
+            style = "max-width: 600px; width: 100%; height: auto;"
+          ))
+        }
+        
+        # Add spacing
+        add_content(br())
+      } else {
+        # Warn about missing column
+        warning(sprintf("Column not found: '%s'", question_text))
+      }
+    }
+    
+    # Add separator between sections (except after the last section)
+    if (section_idx < length(question_metadata$sections$title)) {
+      add_content(hr())
     }
   }
   
