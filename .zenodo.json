@@ -1,0 +1,18 @@
+{
+  "upload_type": "software",
+  "title": "Course feedback report generator",
+  "license": "GPL-2.0-or-later",
+  "keywords": [
+    "Survey",
+    "Feedback",
+    "R",
+    "Shiny"
+  ],
+  "creators": [
+    {
+      "name": "van Geest, Geert",
+      "affiliation": "SIB Swiss Institute of Bioinformatics",
+      "orcid": "0000-0002-1561-078X"
+    }
+  ]
+}
