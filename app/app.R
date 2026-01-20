@@ -8,7 +8,39 @@ source("generate_html_report.R")
 
 # UI Definition
 ui <- fluidPage(
-  title = "Feedback report generator",
+  # Custom CSS for branding
+  tags$head(
+    tags$link(href = "https://fonts.cdnfonts.com/css/cabinet-grotesk", rel = "stylesheet"),
+    tags$link(href = "https://fonts.googleapis.com/css?family=Inter", rel = "stylesheet"),
+    tags$style(HTML("
+      body, .form-control, .btn, p, li, td, th, .selectize-input {
+        font-family: 'Inter', sans-serif;
+      }
+      
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Cabinet Grotesk', sans-serif;
+      }
+      
+      a {
+        color: #009ee3;
+      }
+      
+      a:hover {
+        color: #007bb5;
+      }
+      
+      .btn-primary {
+        background-color: #ae191a;
+        border-color: #ae191a;
+      }
+      
+      .btn-primary:hover {
+        background-color: #8a1416;
+        border-color: #8a1416;
+      }
+    "))
+  ),
+  
   titlePanel(
     div(
       style = "display: flex; justify-content: space-between; align-items: center;",
@@ -20,11 +52,13 @@ ui <- fluidPage(
         "GitHub",
         style = "font-size: 16px; text-decoration: none;"
       )
-    )
+    ),
+    windowTitle = "Feedback report generator"
   ),
   
   sidebarLayout(
     sidebarPanel(
+      tags$img(src = "logo.svg", style = "width: 100%; max-width: 200px; margin-bottom: 20px;"),
       h4("Configuration"),
       
       # Dropdown for question metadata versions
