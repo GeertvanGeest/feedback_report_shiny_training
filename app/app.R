@@ -38,6 +38,25 @@ ui <- fluidPage(
         background-color: #8a1416;
         border-color: #8a1416;
       }
+    ")),
+    tags$script(HTML("
+      // JavaScript function to download HTML content as file
+      function downloadHTMLFile(content, filename) {
+        const blob = new Blob([content], { type: 'text/html' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      }
+      
+      // Shiny custom message handler
+      Shiny.addCustomMessageHandler('downloadHTML', function(message) {
+        downloadHTMLFile(message.content, message.filename);
+      });
     "))
   ),
   
@@ -118,7 +137,8 @@ server <- function(input, output, session) {
   
   # Reactive values to store state
   rv <- reactiveValues(
-    report_path = NULL,
+    html_content = NULL,
+    report_filename = NULL,
     report_ready = FALSE
   )
   
@@ -187,16 +207,21 @@ server <- function(input, output, session) {
         
         incProgress(0.8, detail = "Saving report")
         
-        # Save the HTML document
-        save_html(html_doc, file = output_path)
+        # Convert HTML to string with full document structure (WASM-compatible)
+        temp_file <- tempfile(fileext = ".html")
+        save_html(html_doc, file = temp_file)
+        rv$html_content <- paste(readLines(temp_file, warn = FALSE), collapse = "\n")
+        unlink(temp_file)
         
-        # Store the report path
-        rv$report_path <- output_path
+        rv$report_filename <- output_basename
         rv$report_ready <- TRUE
         
         incProgress(1.0, detail = "Complete!")
         
-        showNotification("Report generated successfully!", type = "message", duration = 5)
+        showNotification(
+          "Report generated successfully!",
+          type = "message", duration = 5
+        )
         
       }, error = function(e) {
         showNotification(paste("Error generating report:", e$message), type = "error", duration = 10)
@@ -208,7 +233,9 @@ server <- function(input, output, session) {
   # Show download button only when report is ready
   output$download_ui <- renderUI({
     if (rv$report_ready) {
-      downloadButton("download_report", "Download Report", class = "btn-success", width = "100%")
+      actionButton("download_report", "Download Report", 
+                   class = "btn-success", width = "100%",
+                   icon = icon("download"))
     }
   })
   
@@ -223,20 +250,18 @@ server <- function(input, output, session) {
     }
   })
   
-  # Download handler
-  output$download_report <- downloadHandler(
-    filename = function() {
-      if (!is.null(input$feedback_file)) {
-        paste0(tools::file_path_sans_ext(input$feedback_file$name), ".html")
-      } else {
-        "feedback_report.html"
-      }
-    },
-    content = function(file) {
-      file.copy(rv$report_path, file)
-    },
-    contentType = "text/html"
-  )
+  # Download handler using JavaScript (WASM-compatible for Chrome)
+  observeEvent(input$download_report, {
+    if (!is.null(rv$html_content) && !is.null(rv$report_filename)) {
+      session$sendCustomMessage(
+        type = "downloadHTML",
+        message = list(
+          content = rv$html_content,
+          filename = rv$report_filename
+        )
+      )
+    }
+  })
 }
 
 # Run the app
