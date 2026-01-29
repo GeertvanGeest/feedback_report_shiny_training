@@ -5,6 +5,9 @@ library(tidyr)
 library(knitr)
 library(kableExtra)
 library(ggthemes)
+library(stringr)
+library(wordcloud)
+library(RColorBrewer)
 
 # Helper function to find a question in metadata by question_text
 find_question_in_metadata <- function(question_metadata, variable) {
@@ -184,4 +187,103 @@ bar_chart <- function(feedback_results, variable, question_metadata, metadata_te
   }
 }
 
-
+# Create a word cloud visualization for open text questions
+word_cloud <- function(feedback_results, variable, max_words = 100, min_freq = 1) {
+  
+  # Common English stop words (expanded list)
+  stop_words <- c(
+    "i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours",
+    "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers",
+    "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves",
+    "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are",
+    "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does",
+    "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until",
+    "while", "of", "at", "by", "for", "with", "about", "against", "between", "into",
+    "through", "during", "before", "after", "above", "below", "to", "from", "up", "down",
+    "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here",
+    "there", "when", "where", "why", "how", "all", "both", "each", "few", "more", "most",
+    "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than",
+    "too", "very", "s", "t", "can", "will", "just", "don", "should", "now", "would",
+    "could", "also", "one", "two", "get", "make", "like", "well", "much", "many", "way",
+    "use", "used", "etc", "e.g", "quite", "really", "think", "see", "go", "come", "want",
+    "know", "take", "give", "find", "tell", "ask", "work", "seem", "feel", "try", "leave",
+    "call", "may", "might", "must", "shall", "let", "say", "said", "even", "back", "good",
+    "new", "first", "last", "long", "great", "little", "own", "old", "right", "big", "high",
+    "small", "large", "next", "course"
+  )
+  
+  # Collect and process text
+  text_data <- feedback_results %>%
+    select(all_of(variable)) %>%
+    filter(!is.na(.data[[variable]]), .data[[variable]] != "") %>%
+    pull(.data[[variable]])
+  
+  if (length(text_data) == 0) {
+    # Return empty plot with message
+    return(
+      ggplot() +
+        annotate("text", x = 0.5, y = 0.5, label = "No text data available", size = 6) +
+        theme_void()
+    )
+  }
+  
+  # Tokenize and count words
+  words <- text_data %>%
+    paste(collapse = " ") %>%
+    tolower() %>%
+    str_replace_all("[[:punct:]]", " ") %>%
+    str_replace_all("[[:digit:]]", " ") %>%
+    str_split("\\s+") %>%
+    unlist() %>%
+    .[nchar(.) > 2] %>%  # Remove very short words
+    .[!(. %in% stop_words)]
+  
+  if (length(words) == 0) {
+    return(
+      ggplot() +
+        annotate("text", x = 0.5, y = 0.5, label = "No meaningful words found", size = 6) +
+        theme_void()
+    )
+  }
+  
+  # Count word frequencies
+  word_freq <- table(words)
+  word_freq <- sort(word_freq, decreasing = TRUE)
+  
+  # Filter by minimum frequency and limit to max words
+  word_freq <- word_freq[word_freq >= min_freq]
+  if (length(word_freq) > max_words) {
+    word_freq <- word_freq[1:max_words]
+  }
+  
+  if (length(word_freq) == 0) {
+    return(
+      ggplot() +
+        annotate("text", x = 0.5, y = 0.5, label = "No frequent words found", size = 6) +
+        theme_void()
+    )
+  }
+  
+  # Create a plotting function that captures the wordcloud output
+  # We need to use a custom plotting device since wordcloud doesn't return a ggplot
+  plot_function <- function() {
+    # Set up color palette
+    colors <- brewer.pal(8, "Dark2")
+    
+    # Create word cloud
+    wordcloud::wordcloud(
+      words = names(word_freq),
+      freq = as.numeric(word_freq),
+      min.freq = min_freq,
+      max.words = max_words,
+      random.order = FALSE,
+      rot.per = 0.35,
+      colors = colors,
+      scale = c(4, 0.5),
+      random.color = FALSE
+    )
+  }
+  
+  # Return the plotting function wrapped so it can be called by ggplot_to_base64
+  return(plot_function)
+}

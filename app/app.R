@@ -96,6 +96,38 @@ ui <- fluidPage(
       
       hr(),
       
+      # Visualization Preferences
+      h4("Visualization Preferences"),
+      
+      selectInput(
+        "viz_mc_ordinal",
+        "Multiple Choice (Ordinal):",
+        choices = c("Bar Chart" = "bar", "Pie Chart" = "pie"),
+        selected = "bar"
+      ),
+      
+      selectInput(
+        "viz_mc_not_ordinal",
+        "Multiple Choice (Not Ordinal):",
+        choices = c("Bar Chart" = "bar", "Pie Chart" = "pie"),
+        selected = "pie"
+      ),
+      
+      tags$div(
+        style = "margin-bottom: 15px;",
+        tags$label("Multiple Select:"),
+        tags$p("Bar Chart (fixed)", style = "color: #666; font-style: italic; margin: 5px 0;")
+      ),
+      
+      selectInput(
+        "viz_open",
+        "Open Questions:",
+        choices = c("Table" = "table", "Word Cloud" = "wordcloud"),
+        selected = "table"
+      ),
+      
+      hr(),
+      
       # Generate report button
       actionButton(
         "generate",
@@ -119,6 +151,7 @@ ui <- fluidPage(
       h4("Instructions"),
       tags$ol(
         tags$li("Select the appropriate question metadata version from the dropdown"),
+        tags$li("Choose your preferred visualization types for each question type"),
         tags$li("Upload your feedback Excel file"),
         tags$li("Click 'Generate Report' to create the HTML report"),
         tags$li("Download the generated report when ready")
@@ -196,13 +229,22 @@ server <- function(input, output, session) {
         output_basename <- paste0(tools::file_path_sans_ext(original_filename), ".html")
         output_path <- file.path(tempdir(), output_basename)
         
+        # Collect visualization preferences
+        viz_preferences <- list(
+          mc_ordinal = input$viz_mc_ordinal,
+          mc_not_ordinal = input$viz_mc_not_ordinal,
+          multiple_select = "bar",  # Fixed
+          open = input$viz_open
+        )
+        
         incProgress(0.4, detail = "Generating visualizations")
         
         # Generate HTML report programmatically
         html_doc <- generate_html_report(
           feedback_file = feedback_path,
           metadata_file = input$metadata_version,
-          original_filename = original_filename
+          original_filename = original_filename,
+          viz_preferences = viz_preferences
         )
         
         incProgress(0.8, detail = "Saving report")

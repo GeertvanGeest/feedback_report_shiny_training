@@ -19,6 +19,17 @@ ggplot_to_base64 <- function(plot, width = 6, height = 4.5, dpi = 150) {
   paste0("data:image/png;base64,", img_data)
 }
 
+# Function to convert base graphics plot (like wordcloud) to base64 PNG
+base_plot_to_base64 <- function(plot_function, width = 8, height = 6, dpi = 150) {
+  tmp <- tempfile(fileext = ".png")
+  png(tmp, width = width * dpi, height = height * dpi, res = dpi)
+  plot_function()
+  dev.off()
+  img_data <- base64enc::base64encode(tmp)
+  unlink(tmp)
+  paste0("data:image/png;base64,", img_data)
+}
+
 # Function to generate HTML table from data frame
 df_to_html_table <- function(df, caption = NULL) {
   table_html <- tags$table(
@@ -42,7 +53,17 @@ df_to_html_table <- function(df, caption = NULL) {
 }
 
 # Main function to generate HTML report
-generate_html_report <- function(feedback_file, metadata_file, original_filename = NULL) {
+generate_html_report <- function(feedback_file, metadata_file, original_filename = NULL, viz_preferences = NULL) {
+  
+  # Default visualization preferences if not provided
+  if (is.null(viz_preferences)) {
+    viz_preferences <- list(
+      mc_ordinal = "bar",
+      mc_not_ordinal = "pie",
+      multiple_select = "bar",
+      open = "table"
+    )
+  }
   
   # Load data
   feedback_results <- read_xlsx(feedback_file)
@@ -176,29 +197,53 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
         # Add question header
         add_content(h3(question_text))
         
-        # Generate appropriate visualization
+        # Generate appropriate visualization based on question type and user preferences
         if (question_type == "open") {
-          # Create table for open questions
-          table_data <- feedback_results %>%
-            select(all_of(matched_column)) %>%
-            filter(!is.na(.data[[matched_column]]), .data[[matched_column]] != "") %>%
-            mutate(Response_ID = row_number()) %>%
-            select(Response_ID, Answer = all_of(matched_column))
+          # Open question: table or word cloud
+          if (viz_preferences$open == "wordcloud") {
+            plot_func <- word_cloud(feedback_results, matched_column)
+            add_content(tags$img(
+              src = base_plot_to_base64(plot_func, width = 8, height = 6),
+              style = "max-width: 800px; width: 100%; height: auto;"
+            ))
+          } else {
+            # Table (default)
+            table_data <- feedback_results %>%
+              select(all_of(matched_column)) %>%
+              filter(!is.na(.data[[matched_column]]), .data[[matched_column]] != "") %>%
+              mutate(Response_ID = row_number()) %>%
+              select(Response_ID, Answer = all_of(matched_column))
+            
+            add_content(df_to_html_table(table_data, caption = question_text))
+          }
           
-          add_content(df_to_html_table(table_data, caption = question_text))
-          
-        } else if (question_type == "multiple_select" || 
-                   (question_type == "multiple_choice" && is_ordinal)) {
-          # Bar chart
+        } else if (question_type == "multiple_select") {
+          # Multiple select: always bar chart
           plot <- bar_chart(feedback_results, matched_column, question_metadata, question_text)
           add_content(tags$img(
             src = ggplot_to_base64(plot, width = 6, height = 4.5),
             style = "max-width: 600px; width: 100%; height: auto;"
           ))
           
+        } else if (question_type == "multiple_choice" && is_ordinal) {
+          # Multiple choice ordinal: bar or pie based on preference
+          if (viz_preferences$mc_ordinal == "pie") {
+            plot <- pie_chart(feedback_results, matched_column, question_metadata, question_text)
+          } else {
+            plot <- bar_chart(feedback_results, matched_column, question_metadata, question_text)
+          }
+          add_content(tags$img(
+            src = ggplot_to_base64(plot, width = 6, height = 4.5),
+            style = "max-width: 600px; width: 100%; height: auto;"
+          ))
+          
         } else if (question_type == "multiple_choice" && !is_ordinal) {
-          # Pie chart
-          plot <- pie_chart(feedback_results, matched_column, question_metadata, question_text)
+          # Multiple choice not ordinal: bar or pie based on preference
+          if (viz_preferences$mc_not_ordinal == "pie") {
+            plot <- pie_chart(feedback_results, matched_column, question_metadata, question_text)
+          } else {
+            plot <- bar_chart(feedback_results, matched_column, question_metadata, question_text)
+          }
           add_content(tags$img(
             src = ggplot_to_base64(plot, width = 6, height = 4.5),
             style = "max-width: 600px; width: 100%; height: auto;"
@@ -276,7 +321,7 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
 }
 
 # Wrapper function to save HTML report
-save_html_report <- function(feedback_file, metadata_file, output_file = NULL, original_filename = NULL) {
+save_html_report <- function(feedback_file, metadata_file, output_file = NULL, original_filename = NULL, viz_preferences = NULL) {
   
   # Generate output filename if not provided
   if (is.null(output_file)) {
@@ -288,7 +333,7 @@ save_html_report <- function(feedback_file, metadata_file, output_file = NULL, o
   }
   
   # Generate HTML
-  html_doc <- generate_html_report(feedback_file, metadata_file, original_filename)
+  html_doc <- generate_html_report(feedback_file, metadata_file, original_filename, viz_preferences)
   
   # Save to file
   save_html(html_doc, file = output_file)

@@ -1,5 +1,5 @@
 {
-    "description": "Question metadata January 2026 without course preferences and e-mails",
+    "description": "Question metadata January 2026 without open questions",
     "sections": [
         {
             "title": "Global appreciation",
@@ -100,34 +100,8 @@
                         "No",
                         "Maybe"
                     ]
-                },
-                {
-                    "variable_name": "course_strengths",
-                    "question_text": "What were the strengths of this course ?",
-                    "question_type": "open",
-                    "is_ordinal": false,
-                    "possible_answers": null
-                },
-                {
-                    "variable_name": "course_improvements",
-                    "question_text": "What aspects of this course could be improved (changes, additions) ?",
-                    "question_type": "open",
-                    "is_ordinal": false,
-                    "possible_answers": null
                 }
-            ]
-        },
-        {
-            "title": "Teaching",
-            "description": "",
-            "questions": [
-                {
-                    "variable_name": "course_trainer_feedback",
-                    "question_text": "Do you have any feedback for the trainer(s), which could be positive comments or things to improve? They can be related to the effectiveness of training delivery, oral expression, ability to answer qu",
-                    "question_type": "open",
-                    "is_ordinal": false,
-                    "possible_answers": null
-                }
+
             ]
         },
         {
@@ -156,6 +130,80 @@
                         "Yes",
                         "No",
                         "Maybe"
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "Future Courses",
+            "description": "Which of the following course(s) would you be interested in attending?",
+            "questions": [
+                {
+                    "variable_name": "interest_omics",
+                    "question_text": "OMICS data analysis",
+                    "question_type": "multiple_select",
+                    "is_ordinal": false,
+                    "possible_answers": [
+                        "Databases and sequence analysis tools",
+                        "NGS data analysis",
+                        "Variant analysis",
+                        "Long read sequencing analysis",
+                        "RNA-Seq analysis",
+                        "Single cell analysis",
+                        "Enrichment analysis",
+                        "Metagenomics",
+                        "Comparative Genomics & phylogenetics",
+                        "Data Integration",
+                        "Computer-aided drug Design"
+                    ]
+                },
+                {
+                    "variable_name": "interest_beginner_stats",
+                    "question_text": "Beginner - Statistics, programming & computing techniques",
+                    "question_type": "multiple_select",
+                    "is_ordinal": false,
+                    "possible_answers": [
+                        "R",
+                        "UNIX",
+                        "Python",
+                        "Best Programming Practices",
+                        "Containers and workflows",
+                        "Version control with Git",
+                        "Bayesian statistics",
+                        "Machine Learning",
+                        "Deep Learning",
+                        "Statistics"
+                    ]
+                },
+                {
+                    "variable_name": "interest_advanced_stats",
+                    "question_text": "Intermediate/Advanced - Statistics, programming & computing techniques",
+                    "question_type": "multiple_select",
+                    "is_ordinal": false,
+                    "possible_answers": [
+                        "R",
+                        "UNIX",
+                        "Python",
+                        "Best Programming Practices",
+                        "Containers and workflows",
+                        "Version control with Git",
+                        "Bayesian statistics",
+                        "Machine Learning",
+                        "Deep Learning",
+                        "Statistics"
+                    ]
+                },
+                {
+                    "variable_name": "interest_datamanagement",
+                    "question_text": "Data management",
+                    "question_type": "multiple_select",
+                    "is_ordinal": false,
+                    "possible_answers": [
+                        "Research Data Management",
+                        "Data Management Planning",
+                        "Data Management Platforms",
+                        "Reproducible Research",
+                        "Making Data FAIR"
                     ]
                 }
             ]
