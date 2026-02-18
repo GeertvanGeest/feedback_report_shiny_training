@@ -71,11 +71,11 @@
                     "question_type": "multiple_choice",
                     "is_ordinal": true,
                     "possible_answers": [
-                        "Poor (1)",
-                        "Satisfactory (2)",
-                        "Good (3)",
+                        "Excellent (5)",
                         "Very Good (4)",
-                        "Excellent (5)"
+                        "Good (3)",
+                        "Satisfactory (2)",
+                        "Poor (1)"
                     ]
                 },
                 {

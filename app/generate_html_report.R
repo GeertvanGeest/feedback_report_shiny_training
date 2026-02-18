@@ -7,8 +7,10 @@ library(jsonlite)
 library(base64enc)
 library(lubridate)
 library(stringr)
+library(here)
 
-source("plot_functions.R")
+# Source plot functions using here package for robust path resolution
+source(here::here("app", "plot_functions.R"))
 
 # Function to convert ggplot to base64 PNG
 ggplot_to_base64 <- function(plot, width = 6, height = 4.5, dpi = 150) {
@@ -61,7 +63,8 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
       mc_ordinal = "bar",
       mc_not_ordinal = "pie",
       multiple_select = "bar",
-      open = "table"
+      open = "table",
+      mc_number_display = "numbers"
     )
   }
   
@@ -230,7 +233,9 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
           if (viz_preferences$mc_ordinal == "pie") {
             plot <- pie_chart(feedback_results, matched_column, question_metadata, question_text)
           } else {
-            plot <- bar_chart(feedback_results, matched_column, question_metadata, question_text)
+            # Pass number_display preference only for bar charts
+            number_display <- if (!is.null(viz_preferences$mc_number_display)) viz_preferences$mc_number_display else "numbers"
+            plot <- bar_chart(feedback_results, matched_column, question_metadata, question_text, number_display)
           }
           add_content(tags$img(
             src = ggplot_to_base64(plot, width = 6, height = 4.5),
@@ -242,7 +247,9 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
           if (viz_preferences$mc_not_ordinal == "pie") {
             plot <- pie_chart(feedback_results, matched_column, question_metadata, question_text)
           } else {
-            plot <- bar_chart(feedback_results, matched_column, question_metadata, question_text)
+            # Pass number_display preference only for bar charts
+            number_display <- if (!is.null(viz_preferences$mc_number_display)) viz_preferences$mc_number_display else "numbers"
+            plot <- bar_chart(feedback_results, matched_column, question_metadata, question_text, number_display)
           }
           add_content(tags$img(
             src = ggplot_to_base64(plot, width = 6, height = 4.5),

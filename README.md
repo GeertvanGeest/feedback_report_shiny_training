@@ -27,13 +27,49 @@ This app automatically deploys to GitHub Pages when you push to the main branch.
 
 ## Project Structure
 
-- `app.R` - Main Shiny application
-- `generate_html_report.R` - HTML report generation functions
-- `plot_functions.R` - Visualization functions (pie charts, bar charts, tables)
-- `data/question_metadata.json` - Question configuration
-- `.github/workflows/deploy.yml` - Automated deployment workflow
+```
+.
+├── app/                          # Shiny web application
+│   ├── app.R                    # Main Shiny app
+│   ├── generate_html_report.R   # HTML report generation
+│   ├── plot_functions.R         # Visualization functions
+│   ├── metadata/                # Question metadata JSON files
+│   └── www/                     # Static assets (logo, etc.)
+│
+├── R/                           # R helper functions for local analysis
+│   └── process_feedback_files.R # Batch processing functions
+│
+├── site/                        # Shinylive deployment (auto-generated)
+│
+├── analysis_feedback_2025.qmd   # Example analysis notebook
+│
+└── .github/workflows/           # CI/CD configuration
+    └── deploy.yml
+```
+
+## Local Analysis
+
+For batch processing feedback files locally (outside the web app):
+
+```r
+# Source helper functions
+source('R/process_feedback_files.R')
+
+# Concatenate all feedback files
+combined_df <- process_feedback_files(
+  directory = "~/path/to/courses",
+  json_path = "app/metadata/202601.json"
+)
+
+# Generate HTML reports for all feedback files
+generate_feedback_reports(
+  directory = "~/path/to/courses",
+  json_path = "app/metadata/202601.json"
+)
+```
+
+See `analysis_feedback_2025.qmd` for a complete example.
 
 ## Adding New Metadata Versions
 
-Add new JSON files to the `data/` folder with the pattern `question_metadata*.json`.
-The app will automatically detect and list them.
+Add new JSON files to the `app/metadata/` folder. The app will automatically detect and list them.

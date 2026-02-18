@@ -89,7 +89,7 @@ pie_chart <- function(feedback_results, variable, question_metadata, metadata_te
 }
 
 # Create a horizontal bar chart for multiple choice and multiple select questions
-bar_chart <- function(feedback_results, variable, question_metadata, metadata_text = NULL) {
+bar_chart <- function(feedback_results, variable, question_metadata, metadata_text = NULL, number_display = "numbers") {
   
   # Find the matching question in metadata (use metadata_text if provided)
   lookup_text <- if (!is.null(metadata_text)) metadata_text else variable
@@ -152,6 +152,9 @@ bar_chart <- function(feedback_results, variable, question_metadata, metadata_te
       count(.data[[variable]]) %>%
       filter(!is.na(.data[[variable]]))
     
+    # Calculate total for percentages
+    total_count <- sum(plot_data$n)
+    
     # If possible_answers provided, ensure all answers are included (even with 0 count)
     if (!is.null(possible_answers)) {
       complete_data <- data.frame(
@@ -170,11 +173,26 @@ bar_chart <- function(feedback_results, variable, question_metadata, metadata_te
         mutate(!!variable := reorder(.data[[variable]], n))
     }
     
+    # Calculate percentages for display
+    plot_data <- plot_data %>%
+      mutate(percentage = n / total_count * 100)
+    
+    # Determine x-axis variable and label based on number_display preference
+    if (number_display == "percentages") {
+      x_var <- plot_data$percentage
+      x_label <- "Percentage (%)"
+      label_values <- paste0(round(plot_data$percentage, 1), "%")
+    } else {
+      x_var <- plot_data$n
+      x_label <- "Count"
+      label_values <- plot_data$n
+    }
+    
     # Create horizontal bar chart
-    ggplot(plot_data, aes(x = n, y = .data[[variable]])) +
+    ggplot(plot_data, aes(x = x_var, y = .data[[variable]])) +
       geom_bar(stat = "identity", fill = "#4E79A7", width = 0.7) +
-      geom_text(aes(label = n), hjust = -0.3, size = 4) +
-      labs(x = "Count", y = "") +
+      geom_text(aes(label = label_values), hjust = -0.3, size = 4) +
+      labs(x = x_label, y = "") +
       theme_minimal() +
       theme(
         axis.text.y = element_text(size = 12),

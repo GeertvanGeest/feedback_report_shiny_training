@@ -1,11 +1,36 @@
 
 ```{r}
-source('process_feedback_files.R')
-feedback_df <- process_feedback_files(directory = "~/OneDrive - SIB Swiss Institute of Bioinformatics/TrainingGroup-Shared/Courses/2025",
-json_path = "app/metadata/202601.json")
+source('R/process_feedback_files.R')
+feedback_df <- process_feedback_files(
+  directory = "~/OneDrive - SIB Swiss Institute of Bioinformatics/TrainingGroup-Shared/Courses/2025",
+  json_path = "app/metadata/202601.json"
+)
 ```
 
 
 ```{r}
 writexl::write_xlsx(feedback_df, "combined_feedback_2025.xlsx")
+```
+
+
+```{r}
+
+# With custom visualization preferences
+viz_prefs <- list(
+  mc_ordinal = "bar",
+  mc_not_ordinal = "pie", 
+  open = "table"
+)
+generate_feedback_reports(
+  directory = "~/OneDrive - SIB Swiss Institute of Bioinformatics/TrainingGroup-Shared/Courses/2025",
+  json_path = "app/metadata/202601.json",
+  viz_preferences = viz_prefs
+)
+
+generate_feedback_reports(
+  directory = "~/OneDrive - SIB Swiss Institute of Bioinformatics/TrainingGroup-Shared/Courses/2025",
+  json_path = "app/metadata/202601.json",
+  viz_preferences = viz_prefs, 
+  output_dir = "~/OneDrive - SIB Swiss Institute of Bioinformatics/TrainingGroup-Shared/Courses/Course Feedback/2025 Course feedback/html_reports/"
+)
 ```

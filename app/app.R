@@ -120,6 +120,13 @@ ui <- fluidPage(
       ),
       
       selectInput(
+        "mc_number_display",
+        "Multiple Choice - Number Display:",
+        choices = c("Absolute Numbers" = "numbers", "Percentages" = "percentages"),
+        selected = "numbers"
+      ),
+      
+      selectInput(
         "viz_open",
         "Open Questions:",
         choices = c("Table" = "table", "Word Cloud" = "wordcloud"),
@@ -234,7 +241,8 @@ server <- function(input, output, session) {
           mc_ordinal = input$viz_mc_ordinal,
           mc_not_ordinal = input$viz_mc_not_ordinal,
           multiple_select = "bar",  # Fixed
-          open = input$viz_open
+          open = input$viz_open,
+          mc_number_display = input$mc_number_display
         )
         
         incProgress(0.4, detail = "Generating visualizations")
