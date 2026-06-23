@@ -1,17 +1,72 @@
 
 ```{r}
 source('R/process_feedback_files.R')
-feedback_df <- process_feedback_files(
-  directory = "~/OneDrive - SIB Swiss Institute of Bioinformatics/TrainingGroup-Shared/Courses/2025",
-  json_path = "app/metadata/202601.json"
-)
+
+feedback_list <- list()
+
+for(year in c("2025", "2026")) {
+  feedback_df <- process_feedback_files(
+    directory = paste0("~/OneDrive - SIB Swiss Institute of Bioinformatics/TrainingGroup-Shared/Courses/", year),
+    json_path = paste0("app/metadata/202601.json")
+  )
+  
+  feedback_list[[paste0("year_", year)]] <- feedback_df
+
+  writexl::write_xlsx(feedback_df, paste0("combined_feedback_", year, ".xlsx"))
+}
+
+feedback_df <- bind_rows(feedback_list)
+
+# the column directory_name is made up of the date and abbreviation for the course, i.e. YYYYMMDD_ABBR. 
+# We infer the date from that and add it as a separate column. 
+
+feedback_df <- feedback_df %>%
+  mutate(date = as.Date(substr(directory_name, 1, 8), format = "%Y%m%d"))
+
 ```
 
 
 ```{r}
-writexl::write_xlsx(feedback_df, "combined_feedback_2025.xlsx")
+writexl::write_xlsx(feedback_df, "combined_feedback.xlsx")
 ```
 
+```{r}
+# filter for courses that took place after 2025-05-04 and before 2026-04-28
+# so we can get the same numbers as in the table provided by Diana and Marion
+feedback_df <- feedback_df %>%
+  filter(date > as.Date("2025-05-01") & date < as.Date("2026-04-28"))
+```
+
+```{r}
+# There are for columns with course preferences
+# [26] "OMICS data analysis"                                                                                            
+# [27] "Beginner - Statistics, programming & computing techniques"
+# [28] "Intermediate/Advanced - Statistics, programming & computing techniques"
+# [29] "Data management"
+# each of them contains semicolon-separated values, so we need to split them into separate rows
+# for each course spefified in the column directory_name I want the number of occurrences for each semi-colon separated answer. 
+# ignore all missing values
+
+library(dplyr)
+library(tidyr)
+course_preferences <- feedback_df %>%
+  select(directory_name, `OMICS data analysis`, `Beginner - Statistics, programming & computing techniques`, `Intermediate/Advanced - Statistics, programming & computing techniques`, `Data management`) %>%
+  pivot_longer(cols = c(`OMICS data analysis`, `Beginner - Statistics, programming & computing techniques`, `Intermediate/Advanced - Statistics, programming & computing techniques`, `Data management`), 
+               names_to = "domain", values_to = "preference_value") %>%
+  separate_rows(preference_value, sep = ";") %>%
+  group_by(directory_name, domain, preference_value) %>%
+  summarise(count = n(), .groups = "drop") |>
+  drop_na(preference_value) |>
+  filter(preference_value != "")
+
+summarized_pref <- course_preferences |>
+  group_by(domain, preference_value) |>
+  summarise(total_count = sum(count), .groups = "drop") 
+
+writexl::write_xlsx(summarized_pref, "course_preferences_summary.xlsx")
+
+writexl::write_xlsx(course_preferences, "course_preferences_detailed.xlsx")
+```
 
 ```{r}
 
