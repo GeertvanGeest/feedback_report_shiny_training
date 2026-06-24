@@ -4,7 +4,7 @@ source('R/process_feedback_files.R')
 
 feedback_list <- list()
 
-for(year in c("2025", "2026")) {
+for(year in c("2024", "2025", "2026")) {
   feedback_df <- process_feedback_files(
     directory = paste0("~/OneDrive - SIB Swiss Institute of Bioinformatics/TrainingGroup-Shared/Courses/", year),
     json_path = paste0("app/metadata/202601.json")
@@ -12,7 +12,7 @@ for(year in c("2025", "2026")) {
   
   feedback_list[[paste0("year_", year)]] <- feedback_df
 
-  writexl::write_xlsx(feedback_df, paste0("combined_feedback_", year, ".xlsx"))
+  writexl::write_xlsx(feedback_df, paste0("combined_feedback/feedback_", year, ".xlsx"))
 }
 
 feedback_df <- bind_rows(feedback_list)
@@ -35,6 +35,8 @@ writexl::write_xlsx(feedback_df, "combined_feedback.xlsx")
 # so we can get the same numbers as in the table provided by Diana and Marion
 feedback_df <- feedback_df %>%
   filter(date > as.Date("2025-05-01") & date < as.Date("2026-04-28"))
+
+writexl::write_xlsx(feedback_df, "combined_feedback_filtered.xlsx")
 ```
 
 ```{r}
@@ -69,6 +71,22 @@ writexl::write_xlsx(course_preferences, "course_preferences_detailed.xlsx")
 ```
 
 ```{r}
+# for the column 'Please tell us your overall rating for the entire course' create a column that extracts the numbers. The number is in between brackets at the end of the string. 
+feedback_df <- feedback_df %>%
+  mutate(overall_rating = as.numeric(gsub(".*\\((\\d+)\\)$", "\\1", `Please tell us your overall rating for the entire course`)))
+
+# create a summary table with the average overall rating for each course. Course identifier is in the column directory_name.
+overall_rating_summary <- feedback_df %>%
+  group_by(directory_name) %>%
+  summarise(average_overall_rating = mean(overall_rating, na.rm = TRUE),
+            count = n(),
+            .groups = "drop")
+
+View(overall_rating_summary)
+```
+
+
+```{r}
 
 # With custom visualization preferences
 viz_prefs <- list(
@@ -89,3 +107,5 @@ generate_feedback_reports(
   output_dir = "~/OneDrive - SIB Swiss Institute of Bioinformatics/TrainingGroup-Shared/Courses/Course Feedback/2025 Course feedback/html_reports/"
 )
 ```
+
+

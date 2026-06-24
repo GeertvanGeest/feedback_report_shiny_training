@@ -55,7 +55,8 @@ df_to_html_table <- function(df, caption = NULL) {
 }
 
 # Main function to generate HTML report
-generate_html_report <- function(feedback_file, metadata_file, original_filename = NULL, viz_preferences = NULL) {
+generate_html_report <- function(feedback_file, metadata_file, original_filename = NULL,
+                                 viz_preferences = NULL, show_percentile = TRUE) {
   
   # Default visualization preferences if not provided
   if (is.null(viz_preferences)) {
@@ -71,6 +72,23 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
   # Load data
   feedback_results <- read_xlsx(feedback_file)
   question_metadata <- fromJSON(metadata_file)
+
+  # Load reference settings from metadata (single source of truth).
+  reference_scores <- NULL
+  reference_year <- NULL
+  if (isTRUE(show_percentile) && !is.null(question_metadata$score_reference) &&
+      !is.null(question_metadata$reference_year)) {
+    reference_year <- as.integer(question_metadata$reference_year)
+    reference_csv <- here::here(question_metadata$score_reference)
+    if (file.exists(reference_csv)) {
+      reference_scores <- utils::read.csv(reference_csv, stringsAsFactors = FALSE)
+      if (nrow(reference_scores) == 0) {
+        reference_scores <- NULL
+      }
+    } else {
+      warning("Reference scores CSV not found: ", reference_csv)
+    }
+  }
   
   # Get filename for title
   if (is.null(original_filename)) {
@@ -157,6 +175,57 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
       str_replace_all("\u0026|&", "&") %>%  # normalize ampersands
       str_squish()  # normalize whitespace
   }
+
+  extract_score_map <- function(section_questions, question_index) {
+    if (!"answer_scores" %in% names(section_questions)) {
+      return(NULL)
+    }
+
+    scores_row <- section_questions$answer_scores[question_index, , drop = FALSE]
+    score_map <- unlist(scores_row[1, ], use.names = TRUE)
+    score_map <- score_map[!is.na(score_map)]
+
+    if (length(score_map) == 0) {
+      return(NULL)
+    }
+
+    setNames(as.numeric(score_map), trimws(names(score_map)))
+  }
+
+  average_score_from_answers <- function(answer_vector, score_map) {
+    if (is.null(score_map) || length(score_map) == 0) {
+      return(NA_real_)
+    }
+
+    mapped_scores <- unname(score_map[trimws(as.character(answer_vector))])
+    if (all(is.na(mapped_scores))) {
+      return(NA_real_)
+    }
+
+    mean(mapped_scores, na.rm = TRUE)
+  }
+
+  percentile_rank <- function(score_value, reference_values) {
+    if (is.na(score_value) || length(reference_values) == 0) {
+      return(NA_integer_)
+    }
+
+    as.integer(round(mean(reference_values <= score_value) * 100))
+  }
+
+  format_ordinal <- function(n) {
+    n <- as.integer(n)
+    if (is.na(n)) {
+      return(NA_character_)
+    }
+
+    if (n %% 100 %in% c(11, 12, 13)) {
+      return(paste0(n, "th"))
+    }
+
+    suffix <- switch(as.character(n %% 10), "1" = "st", "2" = "nd", "3" = "rd", "th")
+    paste0(n, suffix)
+  }
   
   # Helper to add content sections
   add_content <- function(element) {
@@ -241,6 +310,32 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
             src = ggplot_to_base64(plot, width = 6, height = 4.5),
             style = "max-width: 600px; width: 100%; height: auto;"
           ))
+
+          # Add percentile sentence using answer_scores and reference course averages.
+          score_map <- extract_score_map(section_questions, q_idx)
+          course_average <- average_score_from_answers(feedback_results[[matched_column]], score_map)
+
+          if (show_percentile &&
+              !is.null(reference_scores) && !is.na(course_average) &&
+              all(c("question_text", "average_score") %in% names(reference_scores))) {
+            reference_values <- reference_scores %>%
+              filter(question_text == !!question_text) %>%
+              pull(average_score) %>%
+              as.numeric()
+            reference_values <- reference_values[!is.na(reference_values)]
+
+            question_percentile <- percentile_rank(course_average, reference_values)
+            if (!is.na(question_percentile) && !is.null(reference_year)) {
+              percentile_label <- format_ordinal(question_percentile)
+              add_content(p(
+                "The average score of this course for this question was in the ",
+                tags$strong(sprintf("%s percentile", percentile_label)),
+                " of all average scores in ",
+                as.character(reference_year),
+                "."
+              ))
+            }
+          }
           
         } else if (question_type == "multiple_choice" && !is_ordinal) {
           # Multiple choice not ordinal: bar or pie based on preference

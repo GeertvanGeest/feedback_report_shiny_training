@@ -3,6 +3,7 @@ library(readxl)
 library(jsonlite)
 library(htmltools)
 library(munsell)
+library(here)
 
 source("generate_html_report.R")
 
@@ -132,7 +133,17 @@ ui <- fluidPage(
         choices = c("Table" = "table", "Word Cloud" = "wordcloud"),
         selected = "table"
       ),
-      
+
+      hr(),
+
+      h4("Reference Comparison"),
+
+      checkboxInput(
+        "show_percentile",
+        "Show percentile comparison for ordinal questions",
+        value = TRUE
+      ),
+
       hr(),
       
       # Generate report button
@@ -246,13 +257,14 @@ server <- function(input, output, session) {
         )
         
         incProgress(0.4, detail = "Generating visualizations")
-        
+
         # Generate HTML report programmatically
         html_doc <- generate_html_report(
           feedback_file = feedback_path,
           metadata_file = input$metadata_version,
           original_filename = original_filename,
-          viz_preferences = viz_preferences
+          viz_preferences = viz_preferences,
+          show_percentile = isTRUE(input$show_percentile)
         )
         
         incProgress(0.8, detail = "Saving report")

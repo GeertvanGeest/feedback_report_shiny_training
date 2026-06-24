@@ -191,6 +191,160 @@ process_feedback_files <- function(directory, json_path, similarity_threshold = 
 }
 
 
+# Internal helper: extract ordinal question specs and score maps from metadata
+extract_ordinal_question_specs <- function(metadata) {
+  specs <- list()
+
+  for (section_idx in seq_along(metadata$sections$title)) {
+    section_questions <- metadata$sections$questions[[section_idx]]
+
+    if (!"answer_scores" %in% names(section_questions)) {
+      next
+    }
+
+    for (q_idx in seq_len(nrow(section_questions))) {
+      if (!isTRUE(section_questions$is_ordinal[q_idx])) {
+        next
+      }
+
+      scores_row <- section_questions$answer_scores[q_idx, , drop = FALSE]
+      score_map <- unlist(scores_row[1, ], use.names = TRUE)
+      score_map <- score_map[!is.na(score_map)]
+
+      if (length(score_map) == 0) {
+        next
+      }
+
+      specs[[length(specs) + 1]] <- list(
+        question_text = section_questions$question_text[q_idx],
+        score_map = as.numeric(score_map),
+        answer_labels = names(score_map)
+      )
+    }
+  }
+
+  specs
+}
+
+# Internal helper: map answer strings to scores and return mean score
+mean_score_from_answers <- function(answer_vector, score_map_named) {
+  if (length(score_map_named) == 0) {
+    return(NA_real_)
+  }
+
+  clean_answers <- trimws(as.character(answer_vector))
+  clean_map <- setNames(as.numeric(score_map_named), trimws(names(score_map_named)))
+  mapped_scores <- unname(clean_map[clean_answers])
+
+  if (all(is.na(mapped_scores))) {
+    return(NA_real_)
+  }
+
+  mean(mapped_scores, na.rm = TRUE)
+}
+
+#' Create Reference Scores for Ordinal Questions
+#'
+#' Computes per-course mean scores for each ordinal question using answer score
+#' mappings defined in the metadata JSON, and writes the result to CSV.
+#'
+#' @param combined_feedback_file Character. Path to combined feedback Excel file.
+#' @param json_path Character. Path to metadata JSON with answer_scores mappings.
+#' @param output_csv Character. Path to output CSV file.
+#' @param similarity_threshold Numeric. Threshold for fuzzy matching (0-1). Default 0.8.
+#'
+#' @return Data frame with columns: course_id, question_text, average_score, n_scored
+#' @export
+create_reference_scores_csv <- function(combined_feedback_file, json_path, output_csv,
+                                        similarity_threshold = 0.8) {
+
+  require(readxl)
+  require(jsonlite)
+  require(dplyr)
+
+  metadata <- jsonlite::fromJSON(json_path)
+
+  # Align combined feedback headers with metadata question texts.
+  expected_questions <- do.call(rbind, lapply(metadata$sections$questions, function(q) {
+    data.frame(question_text = q$question_text, stringsAsFactors = FALSE)
+  })) %>%
+    pull(question_text)
+
+  reference_df <- readxl::read_excel(combined_feedback_file)
+  reference_df <- standardize_excel_columns(reference_df, expected_questions, similarity_threshold)
+
+  if (!"directory_name" %in% names(reference_df)) {
+    stop("Column 'directory_name' is required in combined feedback file: ", combined_feedback_file)
+  }
+
+  ordinal_specs <- extract_ordinal_question_specs(metadata)
+
+  if (length(ordinal_specs) == 0) {
+    warning("No ordinal questions with answer_scores found in metadata")
+    result <- data.frame(
+      course_id = character(0),
+      question_text = character(0),
+      average_score = numeric(0),
+      n_scored = integer(0),
+      stringsAsFactors = FALSE
+    )
+    utils::write.csv(result, output_csv, row.names = FALSE)
+    return(result)
+  }
+
+  course_ids <- unique(reference_df$directory_name)
+  output_rows <- list()
+
+  for (course_id in course_ids) {
+    course_df <- reference_df %>% filter(directory_name == course_id)
+
+    for (spec in ordinal_specs) {
+      question_text <- spec$question_text
+
+      if (!question_text %in% names(course_df)) {
+        next
+      }
+
+      answers <- course_df[[question_text]]
+      clean_answers <- trimws(as.character(answers))
+      score_map <- setNames(as.numeric(spec$score_map), trimws(spec$answer_labels))
+      mapped_scores <- unname(score_map[clean_answers])
+
+      n_scored <- sum(!is.na(mapped_scores))
+      if (n_scored == 0) {
+        next
+      }
+
+      output_rows[[length(output_rows) + 1]] <- data.frame(
+        course_id = as.character(course_id),
+        question_text = question_text,
+        average_score = mean(mapped_scores, na.rm = TRUE),
+        n_scored = as.integer(n_scored),
+        stringsAsFactors = FALSE
+      )
+    }
+  }
+
+  if (length(output_rows) == 0) {
+    warning("No reference scores could be computed from: ", combined_feedback_file)
+    result <- data.frame(
+      course_id = character(0),
+      question_text = character(0),
+      average_score = numeric(0),
+      n_scored = integer(0),
+      stringsAsFactors = FALSE
+    )
+  } else {
+    result <- dplyr::bind_rows(output_rows)
+  }
+
+  dir.create(dirname(output_csv), showWarnings = FALSE, recursive = TRUE)
+  utils::write.csv(result, output_csv, row.names = FALSE)
+  message("Reference scores saved: ", output_csv)
+
+  result
+}
+
 #' Generate HTML Reports for All Feedback Files
 #'
 #' This function recursively searches for Excel files starting with 'Feedback -',
@@ -202,35 +356,37 @@ process_feedback_files <- function(directory, json_path, similarity_threshold = 
 #' @param similarity_threshold Numeric. Threshold for fuzzy matching (0-1). Default 0.8.
 #' @param viz_preferences List. Visualization preferences for the reports. Default NULL uses defaults.
 #' @param output_dir Character. Optional. Directory to save HTML reports. If NULL, saves alongside Excel files.
+#' @param show_percentile Logical. Whether to include percentile comparison sentences in the report. Default TRUE.
 #'
 #' @return Invisibly returns a vector of generated HTML file paths
-#' 
+#'
 #' @note This function must be run from the project root directory as it sources
 #'       files from the app/ directory.
 #'
 #' @export
-generate_feedback_reports <- function(directory, json_path, similarity_threshold = 0.8, 
-                                      viz_preferences = NULL, output_dir = NULL) {
-  
+generate_feedback_reports <- function(directory, json_path, similarity_threshold = 0.8,
+                                      viz_preferences = NULL, output_dir = NULL,
+                                      show_percentile = TRUE) {
+
   # Load required packages
   require(readxl)
   require(jsonlite)
   require(dplyr)
   require(stringdist)
   require(here)
-  
+
   # Source the report generation functions using here package
   source(here::here("app", "generate_html_report.R"))
-  
+
   # Read JSON metadata
   metadata <- jsonlite::fromJSON(json_path)
-  
+
   # Extract all expected question texts from the JSON
   expected_questions <- do.call(rbind, lapply(metadata$sections$questions, function(q) {
     data.frame(question_text = q$question_text, stringsAsFactors = FALSE)
   })) %>%
     pull(question_text)
-  
+
   # Find all Excel files recursively starting with 'Feedback' (case insensitive)
   # Matches: "Feedback -", "Feedback-", "Feedback ", "Feedback2", etc.
   excel_files <- list.files(
@@ -240,35 +396,35 @@ generate_feedback_reports <- function(directory, json_path, similarity_threshold
     recursive = TRUE,
     ignore.case = TRUE
   )
-  
+
   if (length(excel_files) == 0) {
     warning("No feedback files found in ", directory)
     return(invisible(character(0)))
   }
-  
+
   message("Found ", length(excel_files), " feedback file(s)")
-  
+
   # Initialize vector to store output paths
   generated_reports <- character(length(excel_files))
-  
+
   # Process each Excel file
   for (i in seq_along(excel_files)) {
     excel_file <- excel_files[i]
     file_name_no_ext <- tools::file_path_sans_ext(basename(excel_file))
-    
+
     message("\n[", i, "/", length(excel_files), "] Processing: ", excel_file)
-    
+
     tryCatch({
       # Read Excel file
       df <- readxl::read_excel(excel_file)
-      
+
       # Standardize column names using helper function
       df <- standardize_excel_columns(df, expected_questions, similarity_threshold)
-      
+
       # Save to temporary file with standardized columns
       temp_excel <- tempfile(fileext = ".xlsx")
       writexl::write_xlsx(df, temp_excel)
-      
+
       # Determine output path
       if (!is.null(output_dir)) {
         # Save to specified output directory
@@ -278,38 +434,39 @@ generate_feedback_reports <- function(directory, json_path, similarity_threshold
         # Save alongside original Excel file
         output_file <- file.path(dirname(excel_file), paste0(file_name_no_ext, ".html"))
       }
-      
+
       # Generate HTML report
       message("  Generating HTML report...")
       html_doc <- generate_html_report(
         feedback_file = temp_excel,
         metadata_file = json_path,
         original_filename = basename(excel_file),
-        viz_preferences = viz_preferences
+        viz_preferences = viz_preferences,
+        show_percentile = show_percentile
       )
-      
+
       # Save HTML to file
       htmltools::save_html(html_doc, file = output_file)
-      
+
       # Clean up temp file
       unlink(temp_excel)
-      
+
       generated_reports[i] <- output_file
       message("  Report saved: ", output_file)
-      
+
     }, error = function(e) {
       warning("Error processing file ", excel_file, ": ", e$message)
       generated_reports[i] <- NA_character_
     })
   }
-  
+
   # Summary
   successful <- sum(!is.na(generated_reports))
   message("\n========================================")
   message("Report generation complete!")
   message("Successfully generated ", successful, " out of ", length(excel_files), " report(s)")
   message("========================================")
-  
+
   return(invisible(generated_reports[!is.na(generated_reports)]))
 }
 

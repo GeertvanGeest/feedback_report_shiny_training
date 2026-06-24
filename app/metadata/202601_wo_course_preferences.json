@@ -1,5 +1,7 @@
 {
     "description": "Question metadata January 2026 without course preferences and e-mails",
+    "score_reference": "combined_feedback/reference_scores_2025.csv",
+    "reference_year": 2025,
     "sections": [
         {
             "title": "Global appreciation",
@@ -15,7 +17,13 @@
                         "Rather yes",
                         "Rather no",
                         "No"
-                    ]
+                    ],
+                    "answer_scores": {
+                        "Yes": 3,
+                        "Rather yes": 2,
+                        "Rather no": 1,
+                        "No": 0
+                    }
                 },
                 {
                     "variable_name": "course_length",
@@ -28,7 +36,14 @@
                         "Just the right length",
                         "Slightly too long",
                         "Much too long"
-                    ]
+                    ],
+                    "answer_scores": {
+                        "Much too short": 0,
+                        "Slightly too short": 1,
+                        "Just the right length": 2,
+                        "Slightly too long": 1,
+                        "Much too long": 0
+                    }
                 },
                 {
                     "variable_name": "course_difficulty",
@@ -40,7 +55,13 @@
                         "Rather yes",
                         "Rather no",
                         "No"
-                    ]
+                    ],
+                    "answer_scores": {
+                        "Yes": 3,
+                        "Rather yes": 2,
+                        "Rather no": 1,
+                        "No": 0
+                    }
                 },
                 {
                     "variable_name": "course_balance",
@@ -51,7 +72,12 @@
                         "Too theoretical",
                         "About right",
                         "Too practical"
-                    ]
+                    ],
+                    "answer_scores": {
+                        "Too theoretical": 0,
+                        "About right": 2,
+                        "Too practical": 0
+                    }
                 },
                 {
                     "variable_name": "exercise_integration",
@@ -63,7 +89,13 @@
                         "Rather yes",
                         "Rather no",
                         "No"
-                    ]
+                    ],
+                    "answer_scores": {
+                        "Yes": 3,
+                        "Rather yes": 2,
+                        "Rather no": 1,
+                        "No": 0
+                    }
                 },
                 {
                     "variable_name": "overall_rating",
@@ -76,7 +108,14 @@
                         "Good (3)",
                         "Satisfactory (2)",
                         "Poor (1)"
-                    ]
+                    ],
+                    "answer_scores": {
+                        "Excellent (5)": 5,
+                        "Very Good (4)": 4,
+                        "Good (3)": 3,
+                        "Satisfactory (2)": 2,
+                        "Poor (1)": 1
+                    }
                 },
                 {
                     "variable_name": "course_expectations",
@@ -88,7 +127,13 @@
                         "Rather yes",
                         "Rather no",
                         "No"
-                    ]
+                    ],
+                    "answer_scores": {
+                        "Yes": 3,
+                        "Rather yes": 2,
+                        "Rather no": 1,
+                        "No": 0
+                    }
                 },
                 {
                     "variable_name": "course_recommendation",
@@ -145,7 +190,14 @@
                         "Never - aware of them, but not used them",
                         "Never - used other service",
                         "Never - unaware of them"
-                    ]
+                    ],
+                    "answer_scores": {
+                        "Frequently (weekly to daily)": 4,
+                        "Occasionally (once in a while to monthly)": 3,
+                        "Never - aware of them, but not used them": 2,
+                        "Never - used other service": 1,
+                        "Never - unaware of them": 0
+                    }
                 },
                 {
                     "variable_name": "tool_usage_after",
