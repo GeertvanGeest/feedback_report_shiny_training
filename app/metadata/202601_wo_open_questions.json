@@ -47,6 +47,26 @@
                 },
                 {
                     "variable_name": "course_difficulty",
+                    "question_text": "The difficulty of the course was appropriate for my knowledge",
+                    "question_type": "multiple_choice",
+                    "is_ordinal": true,
+                    "possible_answers": [
+                        "No, much too difficult",
+                        "Not completely - a bit difficult",
+                        "Yes perfectly",
+                        "Not completely - a bit basic",
+                        "No, much too basic"
+                    ],
+                    "answer_scores": {
+                        "No, much too difficult": 0,
+                        "Not completely - a bit difficult": 1,
+                        "Yes perfectly": 2,
+                        "Not completely - a bit basic": 1,
+                        "No, much too basic": 0
+                    }
+                },
+                {
+                    "variable_name": "course_structure",
                     "question_text": "The course content was well structured",
                     "question_type": "multiple_choice",
                     "is_ordinal": true,
@@ -146,7 +166,6 @@
                         "Maybe"
                     ]
                 }
-
             ]
         },
         {
