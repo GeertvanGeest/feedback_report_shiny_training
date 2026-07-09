@@ -15,11 +15,22 @@ find_question_in_metadata <- function(question_metadata, variable) {
     section_questions <- question_metadata$sections$questions[[i]]
     for (j in seq_len(nrow(section_questions))) {
       if (section_questions$question_text[j] == variable) {
+        answer_scores <- NULL
+        if ("answer_scores" %in% names(section_questions)) {
+          scores_row <- section_questions$answer_scores[j, , drop = FALSE]
+          score_map <- unlist(scores_row[1, ], use.names = TRUE)
+          score_map <- score_map[!is.na(score_map)]
+          if (length(score_map) > 0) {
+            answer_scores <- setNames(as.numeric(score_map), trimws(names(score_map)))
+          }
+        }
+
         return(list(
           question_text = section_questions$question_text[j],
           question_type = section_questions$question_type[j],
           is_ordinal = section_questions$is_ordinal[j],
-          possible_answers = section_questions$possible_answers[[j]]
+          possible_answers = section_questions$possible_answers[[j]],
+          answer_scores = answer_scores
         ))
       }
     }
@@ -100,6 +111,34 @@ bar_chart <- function(feedback_results, variable, question_metadata, metadata_te
   } else {
     NULL
   }
+
+  answer_scores <- if (!is.null(question) && !is.null(question$answer_scores)) {
+    question$answer_scores
+  } else {
+    NULL
+  }
+
+  format_score_value <- function(x) {
+    if (isTRUE(all.equal(x, round(x)))) {
+      as.character(as.integer(round(x)))
+    } else {
+      format(round(x, 2), nsmall = 0, trim = TRUE)
+    }
+  }
+
+  y_labeler <- waiver()
+  if (!is.null(answer_scores) && length(answer_scores) > 0) {
+    y_labeler <- function(labels) {
+      vapply(labels, function(lbl) {
+        score <- unname(answer_scores[trimws(as.character(lbl))])
+        if (!is.na(score)) {
+          paste0(lbl, " [", format_score_value(score), "]")
+        } else {
+          lbl
+        }
+      }, character(1))
+    }
+  }
   
   # Check if this is a multiple_select question
   is_multiple_select <- !is.null(question) && question$question_type == "multiple_select"
@@ -137,6 +176,7 @@ bar_chart <- function(feedback_results, variable, question_metadata, metadata_te
       geom_bar(stat = "identity", fill = "#4E79A7", width = 0.7) +
       geom_text(aes(label = n), hjust = -0.3, size = 4) +
       labs(x = "Frequency", y = "") +
+      scale_y_discrete(labels = y_labeler) +
       theme_minimal() +
       theme(
         axis.text.y = element_text(size = 12),
@@ -193,6 +233,7 @@ bar_chart <- function(feedback_results, variable, question_metadata, metadata_te
       geom_bar(stat = "identity", fill = "#4E79A7", width = 0.7) +
       geom_text(aes(label = label_values), hjust = -0.3, size = 4) +
       labs(x = x_label, y = "") +
+      scale_y_discrete(labels = y_labeler) +
       theme_minimal() +
       theme(
         axis.text.y = element_text(size = 12),

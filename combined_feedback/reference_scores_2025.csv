@@ -7,7 +7,7 @@
 "20250114_TTTCH","The exercises were useful and well integrated into the course",2.65,20
 "20250114_TTTCH","Please tell us your overall rating for the entire course",4.5,20
 "20250114_TTTCH","The course met my expectations",2.75,20
-"20250114_TTTCH","Have you used the tool(s)/resource(s) covered in the course before?",2.1,20
+"20250114_TTTCH","Would you recommend the course?",1.95,20
 "20250121_SPODA","The course was well organised (communication, registration, logistics, administration, etc)",2.96875,32
 "20250121_SPODA","For the topics covered the course was",1.4375,32
 "20250121_SPODA","The difficulty of the course was appropriate for my knowledge",1.65625,32
@@ -16,7 +16,7 @@
 "20250121_SPODA","The exercises were useful and well integrated into the course",2.34375,32
 "20250121_SPODA","Please tell us your overall rating for the entire course",4.375,32
 "20250121_SPODA","The course met my expectations",2.78125,32
-"20250121_SPODA","Have you used the tool(s)/resource(s) covered in the course before?",2.84375,32
+"20250121_SPODA","Would you recommend the course?",2,32
 "20250127_STATR","The course was well organised (communication, registration, logistics, administration, etc)",3,21
 "20250127_STATR","For the topics covered the course was",1.52380952380952,21
 "20250127_STATR","The difficulty of the course was appropriate for my knowledge",1.42857142857143,21
@@ -25,7 +25,7 @@
 "20250127_STATR","The exercises were useful and well integrated into the course",2.66666666666667,21
 "20250127_STATR","Please tell us your overall rating for the entire course",4,21
 "20250127_STATR","The course met my expectations",2.47619047619048,21
-"20250127_STATR","Have you used the tool(s)/resource(s) covered in the course before?",2.38095238095238,21
+"20250127_STATR","Would you recommend the course?",1.9047619047619,21
 "20250203_FSWR","The course was well organised (communication, registration, logistics, administration, etc)",2.85714285714286,14
 "20250203_FSWR","For the topics covered the course was",1.64285714285714,14
 "20250203_FSWR","The difficulty of the course was appropriate for my knowledge",1.5,14
@@ -34,7 +34,7 @@
 "20250203_FSWR","The exercises were useful and well integrated into the course",2.92857142857143,14
 "20250203_FSWR","Please tell us your overall rating for the entire course",4.35714285714286,14
 "20250203_FSWR","The course met my expectations",2.78571428571429,14
-"20250203_FSWR","Have you used the tool(s)/resource(s) covered in the course before?",2.21428571428571,14
+"20250203_FSWR","Would you recommend the course?",2,14
 "20250211_GPU","The course was well organised (communication, registration, logistics, administration, etc)",2.68181818181818,22
 "20250211_GPU","For the topics covered the course was",1.5,22
 "20250211_GPU","The difficulty of the course was appropriate for my knowledge",1.31818181818182,22
@@ -43,7 +43,7 @@
 "20250211_GPU","The exercises were useful and well integrated into the course",2.45454545454545,22
 "20250211_GPU","Please tell us your overall rating for the entire course",3.72727272727273,22
 "20250211_GPU","The course met my expectations",2.31818181818182,22
-"20250211_GPU","Have you used the tool(s)/resource(s) covered in the course before?",2.18181818181818,22
+"20250211_GPU","Would you recommend the course?",1.59090909090909,22
 "20250227_LONGR","The course was well organised (communication, registration, logistics, administration, etc)",2.82352941176471,17
 "20250227_LONGR","For the topics covered the course was",1.76470588235294,17
 "20250227_LONGR","The difficulty of the course was appropriate for my knowledge",1.64705882352941,17
@@ -52,7 +52,7 @@
 "20250227_LONGR","The exercises were useful and well integrated into the course",2.76470588235294,17
 "20250227_LONGR","Please tell us your overall rating for the entire course",4.29411764705882,17
 "20250227_LONGR","The course met my expectations",2.70588235294118,17
-"20250227_LONGR","Have you used the tool(s)/resource(s) covered in the course before?",2.52941176470588,17
+"20250227_LONGR","Would you recommend the course?",1.94117647058824,17
 "20250306_MODAI","The course was well organised (communication, registration, logistics, administration, etc)",2.90909090909091,22
 "20250306_MODAI","For the topics covered the course was",1.47619047619048,21
 "20250306_MODAI","The difficulty of the course was appropriate for my knowledge",1.45454545454545,22
@@ -61,7 +61,7 @@
 "20250306_MODAI","The exercises were useful and well integrated into the course",2.45454545454545,22
 "20250306_MODAI","Please tell us your overall rating for the entire course",4.09090909090909,22
 "20250306_MODAI","The course met my expectations",2.52380952380952,21
-"20250306_MODAI","Have you used the tool(s)/resource(s) covered in the course before?",2.5,22
+"20250306_MODAI","Would you recommend the course?",1.90909090909091,22
 "20250311_FSWP","The course was well organised (communication, registration, logistics, administration, etc)",2.95652173913043,23
 "20250311_FSWP","For the topics covered the course was",1.78260869565217,23
 "20250311_FSWP","The difficulty of the course was appropriate for my knowledge",1.73913043478261,23
@@ -70,7 +70,7 @@
 "20250311_FSWP","The exercises were useful and well integrated into the course",2.8695652173913,23
 "20250311_FSWP","Please tell us your overall rating for the entire course",4.56521739130435,23
 "20250311_FSWP","The course met my expectations",2.78260869565217,23
-"20250311_FSWP","Have you used the tool(s)/resource(s) covered in the course before?",2.08695652173913,23
+"20250311_FSWP","Would you recommend the course?",2,23
 "20250314_ENRIC","The course was well organised (communication, registration, logistics, administration, etc)",2.92857142857143,14
 "20250314_ENRIC","For the topics covered the course was",1.57142857142857,14
 "20250314_ENRIC","The difficulty of the course was appropriate for my knowledge",1.64285714285714,14
@@ -79,7 +79,7 @@
 "20250314_ENRIC","The exercises were useful and well integrated into the course",2.57142857142857,14
 "20250314_ENRIC","Please tell us your overall rating for the entire course",4.21428571428571,14
 "20250314_ENRIC","The course met my expectations",2.57142857142857,14
-"20250314_ENRIC","Have you used the tool(s)/resource(s) covered in the course before?",2.28571428571429,14
+"20250314_ENRIC","Would you recommend the course?",1.92857142857143,14
 "20250318_ISCTR","The course was well organised (communication, registration, logistics, administration, etc)",2.83333333333333,18
 "20250318_ISCTR","For the topics covered the course was",1.44444444444444,18
 "20250318_ISCTR","The difficulty of the course was appropriate for my knowledge",1.5,18
@@ -88,7 +88,7 @@
 "20250318_ISCTR","The exercises were useful and well integrated into the course",2.66666666666667,18
 "20250318_ISCTR","Please tell us your overall rating for the entire course",3.94444444444444,18
 "20250318_ISCTR","The course met my expectations",2.33333333333333,18
-"20250318_ISCTR","Have you used the tool(s)/resource(s) covered in the course before?",2.61111111111111,18
+"20250318_ISCTR","Would you recommend the course?",1.88888888888889,18
 "20250401_SHINY","The course was well organised (communication, registration, logistics, administration, etc)",2.64285714285714,14
 "20250401_SHINY","For the topics covered the course was",1.78571428571429,14
 "20250401_SHINY","The difficulty of the course was appropriate for my knowledge",1.64285714285714,14
@@ -97,7 +97,7 @@
 "20250401_SHINY","The exercises were useful and well integrated into the course",2.57142857142857,14
 "20250401_SHINY","Please tell us your overall rating for the entire course",4,14
 "20250401_SHINY","The course met my expectations",2.57142857142857,14
-"20250401_SHINY","Have you used the tool(s)/resource(s) covered in the course before?",1.71428571428571,14
+"20250401_SHINY","Would you recommend the course?",1.85714285714286,14
 "20250403_STAML","The course was well organised (communication, registration, logistics, administration, etc)",2.94117647058824,17
 "20250403_STAML","For the topics covered the course was",1.64705882352941,17
 "20250403_STAML","The difficulty of the course was appropriate for my knowledge",1.41176470588235,17
@@ -106,7 +106,7 @@
 "20250403_STAML","The exercises were useful and well integrated into the course",2.94117647058824,17
 "20250403_STAML","Please tell us your overall rating for the entire course",4.11764705882353,17
 "20250403_STAML","The course met my expectations",2.70588235294118,17
-"20250403_STAML","Have you used the tool(s)/resource(s) covered in the course before?",2.64705882352941,17
+"20250403_STAML","Would you recommend the course?",1.88235294117647,17
 "20250410_SQL","The course was well organised (communication, registration, logistics, administration, etc)",2.89473684210526,19
 "20250410_SQL","For the topics covered the course was",1.63157894736842,19
 "20250410_SQL","The difficulty of the course was appropriate for my knowledge",1.84210526315789,19
@@ -115,7 +115,7 @@
 "20250410_SQL","The exercises were useful and well integrated into the course",2.94736842105263,19
 "20250410_SQL","Please tell us your overall rating for the entire course",4.42105263157895,19
 "20250410_SQL","The course met my expectations",2.89473684210526,19
-"20250410_SQL","Have you used the tool(s)/resource(s) covered in the course before?",2,19
+"20250410_SQL","Would you recommend the course?",1.89473684210526,19
 "20250423_ISEDA","The course was well organised (communication, registration, logistics, administration, etc)",2.92307692307692,13
 "20250423_ISEDA","For the topics covered the course was",1.46153846153846,13
 "20250423_ISEDA","The difficulty of the course was appropriate for my knowledge",1.38461538461538,13
@@ -124,7 +124,7 @@
 "20250423_ISEDA","The exercises were useful and well integrated into the course",2.69230769230769,13
 "20250423_ISEDA","Please tell us your overall rating for the entire course",4.15384615384615,13
 "20250423_ISEDA","The course met my expectations",2.61538461538462,13
-"20250423_ISEDA","Have you used the tool(s)/resource(s) covered in the course before?",2.46153846153846,13
+"20250423_ISEDA","Would you recommend the course?",1.84615384615385,13
 "20250505_IBAYE","The course was well organised (communication, registration, logistics, administration, etc)",2.81818181818182,11
 "20250505_IBAYE","For the topics covered the course was",1.36363636363636,11
 "20250505_IBAYE","The difficulty of the course was appropriate for my knowledge",1.54545454545455,11
@@ -133,7 +133,7 @@
 "20250505_IBAYE","The exercises were useful and well integrated into the course",2.63636363636364,11
 "20250505_IBAYE","Please tell us your overall rating for the entire course",4.18181818181818,11
 "20250505_IBAYE","The course met my expectations",2.72727272727273,11
-"20250505_IBAYE","Have you used the tool(s)/resource(s) covered in the course before?",2.36363636363636,11
+"20250505_IBAYE","Would you recommend the course?",1.90909090909091,11
 "20250507_MEMIC","The course was well organised (communication, registration, logistics, administration, etc)",2.94736842105263,19
 "20250507_MEMIC","For the topics covered the course was",1.36842105263158,19
 "20250507_MEMIC","The difficulty of the course was appropriate for my knowledge",1.63157894736842,19
@@ -142,7 +142,7 @@
 "20250507_MEMIC","The exercises were useful and well integrated into the course",2.57894736842105,19
 "20250507_MEMIC","Please tell us your overall rating for the entire course",4.10526315789474,19
 "20250507_MEMIC","The course met my expectations",2.36842105263158,19
-"20250507_MEMIC","Have you used the tool(s)/resource(s) covered in the course before?",2.52631578947368,19
+"20250507_MEMIC","Would you recommend the course?",2,19
 "20250516_BGEEL","The course was well organised (communication, registration, logistics, administration, etc)",2.77777777777778,27
 "20250516_BGEEL","For the topics covered the course was",1.55555555555556,27
 "20250516_BGEEL","The difficulty of the course was appropriate for my knowledge",1.81481481481481,27
@@ -151,7 +151,7 @@
 "20250516_BGEEL","The exercises were useful and well integrated into the course",2.48148148148148,27
 "20250516_BGEEL","Please tell us your overall rating for the entire course",3.81481481481481,27
 "20250516_BGEEL","The course met my expectations",2.44444444444444,27
-"20250516_BGEEL","Have you used the tool(s)/resource(s) covered in the course before?",1.44444444444444,27
+"20250516_BGEEL","Would you recommend the course?",1.77777777777778,27
 "20250519_USLLM","The course was well organised (communication, registration, logistics, administration, etc)",3,11
 "20250519_USLLM","For the topics covered the course was",1.63636363636364,11
 "20250519_USLLM","The difficulty of the course was appropriate for my knowledge",1.54545454545455,11
@@ -160,7 +160,7 @@
 "20250519_USLLM","The exercises were useful and well integrated into the course",2.45454545454545,11
 "20250519_USLLM","Please tell us your overall rating for the entire course",4.27272727272727,11
 "20250519_USLLM","The course met my expectations",2.63636363636364,11
-"20250519_USLLM","Have you used the tool(s)/resource(s) covered in the course before?",2.27272727272727,11
+"20250519_USLLM","Would you recommend the course?",1.90909090909091,11
 "20250520_OPEMP","The course was well organised (communication, registration, logistics, administration, etc)",3,4
 "20250520_OPEMP","For the topics covered the course was",1.75,4
 "20250520_OPEMP","The difficulty of the course was appropriate for my knowledge",1.5,4
@@ -169,7 +169,7 @@
 "20250520_OPEMP","The exercises were useful and well integrated into the course",2.75,4
 "20250520_OPEMP","Please tell us your overall rating for the entire course",3.75,4
 "20250520_OPEMP","The course met my expectations",2.75,4
-"20250520_OPEMP","Have you used the tool(s)/resource(s) covered in the course before?",2,4
+"20250520_OPEMP","Would you recommend the course?",2,4
 "20250522_IMPUT","The course was well organised (communication, registration, logistics, administration, etc)",2.91666666666667,12
 "20250522_IMPUT","For the topics covered the course was",1.25,12
 "20250522_IMPUT","The difficulty of the course was appropriate for my knowledge",1.41666666666667,12
@@ -178,7 +178,7 @@
 "20250522_IMPUT","The exercises were useful and well integrated into the course",1.58333333333333,12
 "20250522_IMPUT","Please tell us your overall rating for the entire course",3.5,12
 "20250522_IMPUT","The course met my expectations",2.08333333333333,12
-"20250522_IMPUT","Have you used the tool(s)/resource(s) covered in the course before?",2.16666666666667,12
+"20250522_IMPUT","Would you recommend the course?",1.58333333333333,12
 "20250526_INMLP","The course was well organised (communication, registration, logistics, administration, etc)",2.9,10
 "20250526_INMLP","For the topics covered the course was",1.5,10
 "20250526_INMLP","The difficulty of the course was appropriate for my knowledge",1.6,10
@@ -187,7 +187,7 @@
 "20250526_INMLP","The exercises were useful and well integrated into the course",2.7,10
 "20250526_INMLP","Please tell us your overall rating for the entire course",4,10
 "20250526_INMLP","The course met my expectations",2.3,10
-"20250526_INMLP","Have you used the tool(s)/resource(s) covered in the course before?",2.9,10
+"20250526_INMLP","Would you recommend the course?",1.7,10
 "20250527_DOCK","The course was well organised (communication, registration, logistics, administration, etc)",3,10
 "20250527_DOCK","For the topics covered the course was",1.7,10
 "20250527_DOCK","The difficulty of the course was appropriate for my knowledge",1.7,10
@@ -196,7 +196,7 @@
 "20250527_DOCK","The exercises were useful and well integrated into the course",3,10
 "20250527_DOCK","Please tell us your overall rating for the entire course",4.5,10
 "20250527_DOCK","The course met my expectations",2.9,10
-"20250527_DOCK","Have you used the tool(s)/resource(s) covered in the course before?",2.4,10
+"20250527_DOCK","Would you recommend the course?",2,10
 "20250528_SNAKE","The course was well organised (communication, registration, logistics, administration, etc)",2.84615384615385,13
 "20250528_SNAKE","For the topics covered the course was",1.53846153846154,13
 "20250528_SNAKE","The difficulty of the course was appropriate for my knowledge",1.76923076923077,13
@@ -205,7 +205,7 @@
 "20250528_SNAKE","The exercises were useful and well integrated into the course",2.66666666666667,12
 "20250528_SNAKE","Please tell us your overall rating for the entire course",4.15384615384615,13
 "20250528_SNAKE","The course met my expectations",2.84615384615385,13
-"20250528_SNAKE","Have you used the tool(s)/resource(s) covered in the course before?",2.76923076923077,13
+"20250528_SNAKE","Would you recommend the course?",2,13
 "20250616_BIMVZ","The course was well organised (communication, registration, logistics, administration, etc)",2.61111111111111,18
 "20250616_BIMVZ","For the topics covered the course was",1.33333333333333,18
 "20250616_BIMVZ","The difficulty of the course was appropriate for my knowledge",1.33333333333333,18
@@ -214,7 +214,7 @@
 "20250616_BIMVZ","The exercises were useful and well integrated into the course",2.16666666666667,18
 "20250616_BIMVZ","Please tell us your overall rating for the entire course",3.55555555555556,18
 "20250616_BIMVZ","The course met my expectations",2.05555555555556,18
-"20250616_BIMVZ","Have you used the tool(s)/resource(s) covered in the course before?",2.27777777777778,18
+"20250616_BIMVZ","Would you recommend the course?",1.5,18
 "20250617_CAUSI","The course was well organised (communication, registration, logistics, administration, etc)",2.64285714285714,14
 "20250617_CAUSI","For the topics covered the course was",1.28571428571429,14
 "20250617_CAUSI","The difficulty of the course was appropriate for my knowledge",1.21428571428571,14
@@ -223,7 +223,7 @@
 "20250617_CAUSI","The exercises were useful and well integrated into the course",2.07142857142857,14
 "20250617_CAUSI","Please tell us your overall rating for the entire course",3.78571428571429,14
 "20250617_CAUSI","The course met my expectations",2.42857142857143,14
-"20250617_CAUSI","Have you used the tool(s)/resource(s) covered in the course before?",1.64285714285714,14
+"20250617_CAUSI","Would you recommend the course?",1.64285714285714,14
 "20250701_BPP","The course was well organised (communication, registration, logistics, administration, etc)",2.90909090909091,11
 "20250701_BPP","For the topics covered the course was",1.63636363636364,11
 "20250701_BPP","The difficulty of the course was appropriate for my knowledge",1.54545454545455,11
@@ -232,7 +232,7 @@
 "20250701_BPP","The exercises were useful and well integrated into the course",2.7,10
 "20250701_BPP","Please tell us your overall rating for the entire course",4.54545454545455,11
 "20250701_BPP","The course met my expectations",2.72727272727273,11
-"20250701_BPP","Have you used the tool(s)/resource(s) covered in the course before?",3,11
+"20250701_BPP","Would you recommend the course?",1.90909090909091,11
 "20250702_ISCTR","The course was well organised (communication, registration, logistics, administration, etc)",2.65,20
 "20250702_ISCTR","For the topics covered the course was",1.25,20
 "20250702_ISCTR","The difficulty of the course was appropriate for my knowledge",1.55,20
@@ -241,7 +241,7 @@
 "20250702_ISCTR","The exercises were useful and well integrated into the course",2.85,20
 "20250702_ISCTR","Please tell us your overall rating for the entire course",3.9,20
 "20250702_ISCTR","The course met my expectations",2.52631578947368,19
-"20250702_ISCTR","Have you used the tool(s)/resource(s) covered in the course before?",2.5,20
+"20250702_ISCTR","Would you recommend the course?",1.8,20
 "20250708_QUART","The course was well organised (communication, registration, logistics, administration, etc)",2.83333333333333,12
 "20250708_QUART","For the topics covered the course was",1.5,12
 "20250708_QUART","The difficulty of the course was appropriate for my knowledge",1.58333333333333,12
@@ -250,7 +250,7 @@
 "20250708_QUART","The exercises were useful and well integrated into the course",2.91666666666667,12
 "20250708_QUART","Please tell us your overall rating for the entire course",4.33333333333333,12
 "20250708_QUART","The course met my expectations",2.75,12
-"20250708_QUART","Have you used the tool(s)/resource(s) covered in the course before?",2.5,12
+"20250708_QUART","Would you recommend the course?",1.91666666666667,12
 "20250825_COMGE","The course was well organised (communication, registration, logistics, administration, etc)",2.86363636363636,22
 "20250825_COMGE","For the topics covered the course was",1.5,22
 "20250825_COMGE","The difficulty of the course was appropriate for my knowledge",1.72727272727273,22
@@ -259,7 +259,7 @@
 "20250825_COMGE","The exercises were useful and well integrated into the course",2.72727272727273,22
 "20250825_COMGE","Please tell us your overall rating for the entire course",4.36363636363636,22
 "20250825_COMGE","The course met my expectations",2.68181818181818,22
-"20250825_COMGE","Have you used the tool(s)/resource(s) covered in the course before?",2.36363636363636,22
+"20250825_COMGE","Would you recommend the course?",1.95454545454545,22
 "20250828_RPACK","The course was well organised (communication, registration, logistics, administration, etc)",2.94736842105263,19
 "20250828_RPACK","For the topics covered the course was",1.73684210526316,19
 "20250828_RPACK","The difficulty of the course was appropriate for my knowledge",1.68421052631579,19
@@ -268,7 +268,7 @@
 "20250828_RPACK","The exercises were useful and well integrated into the course",2.57894736842105,19
 "20250828_RPACK","Please tell us your overall rating for the entire course",4.36842105263158,19
 "20250828_RPACK","The course met my expectations",2.78947368421053,19
-"20250828_RPACK","Have you used the tool(s)/resource(s) covered in the course before?",2.57894736842105,19
+"20250828_RPACK","Would you recommend the course?",1.89473684210526,19
 "20250829_FEDBX","The course was well organised (communication, registration, logistics, administration, etc)",2.53846153846154,13
 "20250829_FEDBX","For the topics covered the course was",1.53846153846154,13
 "20250829_FEDBX","The difficulty of the course was appropriate for my knowledge",1.76923076923077,13
@@ -277,7 +277,7 @@
 "20250829_FEDBX","The exercises were useful and well integrated into the course",2.46153846153846,13
 "20250829_FEDBX","Please tell us your overall rating for the entire course",3.76923076923077,13
 "20250829_FEDBX","The course met my expectations",2.23076923076923,13
-"20250829_FEDBX","Have you used the tool(s)/resource(s) covered in the course before?",0.846153846153846,13
+"20250829_FEDBX","Would you recommend the course?",1.61538461538462,13
 "20250901_ASSM","The course was well organised (communication, registration, logistics, administration, etc)",2.875,16
 "20250901_ASSM","For the topics covered the course was",1.5,16
 "20250901_ASSM","The difficulty of the course was appropriate for my knowledge",1.75,16
@@ -286,7 +286,7 @@
 "20250901_ASSM","The exercises were useful and well integrated into the course",2.5625,16
 "20250901_ASSM","Please tell us your overall rating for the entire course",4.4375,16
 "20250901_ASSM","The course met my expectations",2.6875,16
-"20250901_ASSM","Have you used the tool(s)/resource(s) covered in the course before?",2.75,16
+"20250901_ASSM","Would you recommend the course?",1.875,16
 "20250902_FSWU","The course was well organised (communication, registration, logistics, administration, etc)",2.88888888888889,9
 "20250902_FSWU","For the topics covered the course was",1.66666666666667,9
 "20250902_FSWU","The difficulty of the course was appropriate for my knowledge",1.66666666666667,9
@@ -295,7 +295,7 @@
 "20250902_FSWU","The exercises were useful and well integrated into the course",3,9
 "20250902_FSWU","Please tell us your overall rating for the entire course",3.88888888888889,9
 "20250902_FSWU","The course met my expectations",2.88888888888889,9
-"20250902_FSWU","Have you used the tool(s)/resource(s) covered in the course before?",2.33333333333333,9
+"20250902_FSWU","Would you recommend the course?",2,9
 "20250917_FSWP","The course was well organised (communication, registration, logistics, administration, etc)",3,8
 "20250917_FSWP","For the topics covered the course was",1.5,8
 "20250917_FSWP","The difficulty of the course was appropriate for my knowledge",1.75,8
@@ -304,7 +304,7 @@
 "20250917_FSWP","The exercises were useful and well integrated into the course",3,8
 "20250917_FSWP","Please tell us your overall rating for the entire course",4.875,8
 "20250917_FSWP","The course met my expectations",2.71428571428571,7
-"20250917_FSWP","Have you used the tool(s)/resource(s) covered in the course before?",2,8
+"20250917_FSWP","Would you recommend the course?",1.875,8
 "20250925_IRNAS CUSO","The course was well organised (communication, registration, logistics, administration, etc)",3,21
 "20250925_IRNAS CUSO","For the topics covered the course was",1.23809523809524,21
 "20250925_IRNAS CUSO","The difficulty of the course was appropriate for my knowledge",1.57142857142857,21
@@ -313,7 +313,7 @@
 "20250925_IRNAS CUSO","The exercises were useful and well integrated into the course",2.80952380952381,21
 "20250925_IRNAS CUSO","Please tell us your overall rating for the entire course",4.38095238095238,21
 "20250925_IRNAS CUSO","The course met my expectations",2.80952380952381,21
-"20250925_IRNAS CUSO","Have you used the tool(s)/resource(s) covered in the course before?",2.28571428571429,21
+"20250925_IRNAS CUSO","Would you recommend the course?",2,21
 "20250930_USLLM","The course was well organised (communication, registration, logistics, administration, etc)",2.875,16
 "20250930_USLLM","For the topics covered the course was",1.375,16
 "20250930_USLLM","The difficulty of the course was appropriate for my knowledge",1.4375,16
@@ -322,7 +322,7 @@
 "20250930_USLLM","The exercises were useful and well integrated into the course",2.46666666666667,15
 "20250930_USLLM","Please tell us your overall rating for the entire course",3.75,16
 "20250930_USLLM","The course met my expectations",2.3125,16
-"20250930_USLLM","Have you used the tool(s)/resource(s) covered in the course before?",2,16
+"20250930_USLLM","Would you recommend the course?",1.625,16
 "20251002_INMLP","The course was well organised (communication, registration, logistics, administration, etc)",2.875,8
 "20251002_INMLP","For the topics covered the course was",1.25,8
 "20251002_INMLP","The difficulty of the course was appropriate for my knowledge",1.625,8
@@ -331,7 +331,7 @@
 "20251002_INMLP","The exercises were useful and well integrated into the course",2.875,8
 "20251002_INMLP","Please tell us your overall rating for the entire course",4.625,8
 "20251002_INMLP","The course met my expectations",2.625,8
-"20251002_INMLP","Have you used the tool(s)/resource(s) covered in the course before?",2.5,8
+"20251002_INMLP","Would you recommend the course?",2,8
 "20251009_DOCK","The course was well organised (communication, registration, logistics, administration, etc)",2.66666666666667,9
 "20251009_DOCK","For the topics covered the course was",1.44444444444444,9
 "20251009_DOCK","The difficulty of the course was appropriate for my knowledge",1.66666666666667,9
@@ -340,7 +340,7 @@
 "20251009_DOCK","The exercises were useful and well integrated into the course",2.66666666666667,9
 "20251009_DOCK","Please tell us your overall rating for the entire course",4,9
 "20251009_DOCK","The course met my expectations",2.33333333333333,9
-"20251009_DOCK","Have you used the tool(s)/resource(s) covered in the course before?",2.66666666666667,9
+"20251009_DOCK","Would you recommend the course?",1.77777777777778,9
 "20251010_SNAKE","The course was well organised (communication, registration, logistics, administration, etc)",2.8,10
 "20251010_SNAKE","For the topics covered the course was",1.33333333333333,9
 "20251010_SNAKE","The difficulty of the course was appropriate for my knowledge",1.6,10
@@ -349,7 +349,7 @@
 "20251010_SNAKE","The exercises were useful and well integrated into the course",2.7,10
 "20251010_SNAKE","Please tell us your overall rating for the entire course",4.3,10
 "20251010_SNAKE","The course met my expectations",2.6,10
-"20251010_SNAKE","Have you used the tool(s)/resource(s) covered in the course before?",2.7,10
+"20251010_SNAKE","Would you recommend the course?",1.9,10
 "20251013_FSWR","The course was well organised (communication, registration, logistics, administration, etc)",2.94444444444444,18
 "20251013_FSWR","For the topics covered the course was",1.61111111111111,18
 "20251013_FSWR","The difficulty of the course was appropriate for my knowledge",1.5,18
@@ -358,7 +358,7 @@
 "20251013_FSWR","The exercises were useful and well integrated into the course",2.77777777777778,18
 "20251013_FSWR","Please tell us your overall rating for the entire course",4.44444444444444,18
 "20251013_FSWR","The course met my expectations",2.72222222222222,18
-"20251013_FSWR","Have you used the tool(s)/resource(s) covered in the course before?",2.05555555555556,18
+"20251013_FSWR","Would you recommend the course?",1.94444444444444,18
 "20251015_ATACS","The course was well organised (communication, registration, logistics, administration, etc)",2.81818181818182,11
 "20251015_ATACS","For the topics covered the course was",2,11
 "20251015_ATACS","The difficulty of the course was appropriate for my knowledge",1.72727272727273,11
@@ -367,7 +367,7 @@
 "20251015_ATACS","The exercises were useful and well integrated into the course",3,11
 "20251015_ATACS","Please tell us your overall rating for the entire course",4.54545454545455,11
 "20251015_ATACS","The course met my expectations",2.81818181818182,11
-"20251015_ATACS","Have you used the tool(s)/resource(s) covered in the course before?",2.54545454545455,11
+"20251015_ATACS","Would you recommend the course?",2,11
 "20251024_IMBIO","The course was well organised (communication, registration, logistics, administration, etc)",2.61111111111111,18
 "20251024_IMBIO","For the topics covered the course was",1.61111111111111,18
 "20251024_IMBIO","The difficulty of the course was appropriate for my knowledge",1.33333333333333,18
@@ -376,7 +376,7 @@
 "20251024_IMBIO","The exercises were useful and well integrated into the course",2,18
 "20251024_IMBIO","Please tell us your overall rating for the entire course",3.38888888888889,18
 "20251024_IMBIO","The course met my expectations",2.11764705882353,17
-"20251024_IMBIO","Have you used the tool(s)/resource(s) covered in the course before?",2.77777777777778,18
+"20251024_IMBIO","Would you recommend the course?",1.66666666666667,18
 "20251027_BIOSE","The course was well organised (communication, registration, logistics, administration, etc)",2.66666666666667,6
 "20251027_BIOSE","For the topics covered the course was",1.66666666666667,6
 "20251027_BIOSE","The difficulty of the course was appropriate for my knowledge",1.66666666666667,6
@@ -385,7 +385,7 @@
 "20251027_BIOSE","The exercises were useful and well integrated into the course",2.66666666666667,6
 "20251027_BIOSE","Please tell us your overall rating for the entire course",3.5,6
 "20251027_BIOSE","The course met my expectations",2,6
-"20251027_BIOSE","Have you used the tool(s)/resource(s) covered in the course before?",3.5,6
+"20251027_BIOSE","Would you recommend the course?",1.5,6
 "20251028_GIT","The course was well organised (communication, registration, logistics, administration, etc)",2.9,20
 "20251028_GIT","For the topics covered the course was",1.55,20
 "20251028_GIT","The difficulty of the course was appropriate for my knowledge",1.8,20
@@ -394,7 +394,7 @@
 "20251028_GIT","The exercises were useful and well integrated into the course",2.85,20
 "20251028_GIT","Please tell us your overall rating for the entire course",4.4,20
 "20251028_GIT","The course met my expectations",2.68421052631579,19
-"20251028_GIT","Have you used the tool(s)/resource(s) covered in the course before?",2.9,20
+"20251028_GIT","Would you recommend the course?",1.85,20
 "20251105_ADVUN","The course was well organised (communication, registration, logistics, administration, etc)",2.88888888888889,9
 "20251105_ADVUN","For the topics covered the course was",1.44444444444444,9
 "20251105_ADVUN","The difficulty of the course was appropriate for my knowledge",1.88888888888889,9
@@ -403,7 +403,7 @@
 "20251105_ADVUN","The exercises were useful and well integrated into the course",2.55555555555556,9
 "20251105_ADVUN","Please tell us your overall rating for the entire course",3.88888888888889,9
 "20251105_ADVUN","The course met my expectations",2.33333333333333,9
-"20251105_ADVUN","Have you used the tool(s)/resource(s) covered in the course before?",3.55555555555556,9
+"20251105_ADVUN","Would you recommend the course?",1.88888888888889,9
 "20251110_DARPY","The course was well organised (communication, registration, logistics, administration, etc)",2.9,10
 "20251110_DARPY","For the topics covered the course was",1.8,10
 "20251110_DARPY","The difficulty of the course was appropriate for my knowledge",1.4,10
@@ -412,7 +412,7 @@
 "20251110_DARPY","The exercises were useful and well integrated into the course",2.77777777777778,9
 "20251110_DARPY","Please tell us your overall rating for the entire course",4,10
 "20251110_DARPY","The course met my expectations",2.6,10
-"20251110_DARPY","Have you used the tool(s)/resource(s) covered in the course before?",2.7,10
+"20251110_DARPY","Would you recommend the course?",1.6,10
 "20251111_OPTPY","The course was well organised (communication, registration, logistics, administration, etc)",2.72727272727273,11
 "20251111_OPTPY","For the topics covered the course was",2,11
 "20251111_OPTPY","The difficulty of the course was appropriate for my knowledge",1.36363636363636,11
@@ -421,7 +421,7 @@
 "20251111_OPTPY","The exercises were useful and well integrated into the course",2.72727272727273,11
 "20251111_OPTPY","Please tell us your overall rating for the entire course",4.18181818181818,11
 "20251111_OPTPY","The course met my expectations",2.45454545454545,11
-"20251111_OPTPY","Have you used the tool(s)/resource(s) covered in the course before?",2.09090909090909,11
+"20251111_OPTPY","Would you recommend the course?",1.90909090909091,11
 "20251112_ISCTR","The course was well organised (communication, registration, logistics, administration, etc)",2.82352941176471,17
 "20251112_ISCTR","For the topics covered the course was",1.35294117647059,17
 "20251112_ISCTR","The difficulty of the course was appropriate for my knowledge",1.64705882352941,17
@@ -430,7 +430,7 @@
 "20251112_ISCTR","The exercises were useful and well integrated into the course",2.58823529411765,17
 "20251112_ISCTR","Please tell us your overall rating for the entire course",4.41176470588235,17
 "20251112_ISCTR","The course met my expectations",2.58823529411765,17
-"20251112_ISCTR","Have you used the tool(s)/resource(s) covered in the course before?",2.58823529411765,17
+"20251112_ISCTR","Would you recommend the course?",1.82352941176471,17
 "20251117_INTML","The course was well organised (communication, registration, logistics, administration, etc)",2.82352941176471,17
 "20251117_INTML","For the topics covered the course was",1.58823529411765,17
 "20251117_INTML","The difficulty of the course was appropriate for my knowledge",1.41176470588235,17
@@ -439,7 +439,7 @@
 "20251117_INTML","The exercises were useful and well integrated into the course",2.64705882352941,17
 "20251117_INTML","Please tell us your overall rating for the entire course",3.82352941176471,17
 "20251117_INTML","The course met my expectations",2.29411764705882,17
-"20251117_INTML","Have you used the tool(s)/resource(s) covered in the course before?",2.58823529411765,17
+"20251117_INTML","Would you recommend the course?",1.70588235294118,17
 "20251118_IVIPY","The course was well organised (communication, registration, logistics, administration, etc)",2.8,5
 "20251118_IVIPY","For the topics covered the course was",1.2,5
 "20251118_IVIPY","The difficulty of the course was appropriate for my knowledge",1.8,5
@@ -448,7 +448,7 @@
 "20251118_IVIPY","The exercises were useful and well integrated into the course",3,5
 "20251118_IVIPY","Please tell us your overall rating for the entire course",4.2,5
 "20251118_IVIPY","The course met my expectations",2.8,5
-"20251118_IVIPY","Have you used the tool(s)/resource(s) covered in the course before?",1.6,5
+"20251118_IVIPY","Would you recommend the course?",2,5
 "20251119_ISEDA","The course was well organised (communication, registration, logistics, administration, etc)",2.90909090909091,11
 "20251119_ISEDA","For the topics covered the course was",1.72727272727273,11
 "20251119_ISEDA","The difficulty of the course was appropriate for my knowledge",1.63636363636364,11
@@ -457,7 +457,7 @@
 "20251119_ISEDA","The exercises were useful and well integrated into the course",2.54545454545455,11
 "20251119_ISEDA","Please tell us your overall rating for the entire course",4.45454545454545,11
 "20251119_ISEDA","The course met my expectations",2.72727272727273,11
-"20251119_ISEDA","Have you used the tool(s)/resource(s) covered in the course before?",1.63636363636364,11
+"20251119_ISEDA","Would you recommend the course?",1.81818181818182,11
 "20251128_ENRIC","The course was well organised (communication, registration, logistics, administration, etc)",2.8,10
 "20251128_ENRIC","For the topics covered the course was",1.8,10
 "20251128_ENRIC","The difficulty of the course was appropriate for my knowledge",1.6,10
@@ -466,7 +466,7 @@
 "20251128_ENRIC","The exercises were useful and well integrated into the course",2.7,10
 "20251128_ENRIC","Please tell us your overall rating for the entire course",4.7,10
 "20251128_ENRIC","The course met my expectations",2.8,10
-"20251128_ENRIC","Have you used the tool(s)/resource(s) covered in the course before?",2.3,10
+"20251128_ENRIC","Would you recommend the course?",2,10
 "20251201_DEEPP","The course was well organised (communication, registration, logistics, administration, etc)",2.85,20
 "20251201_DEEPP","For the topics covered the course was",1.65,20
 "20251201_DEEPP","The difficulty of the course was appropriate for my knowledge",1.6,20
@@ -475,7 +475,7 @@
 "20251201_DEEPP","The exercises were useful and well integrated into the course",2.65,20
 "20251201_DEEPP","Please tell us your overall rating for the entire course",4.1,20
 "20251201_DEEPP","The course met my expectations",2.4,20
-"20251201_DEEPP","Have you used the tool(s)/resource(s) covered in the course before?",2.55,20
+"20251201_DEEPP","Would you recommend the course?",2,20
 "20251209_SBSRT","The course was well organised (communication, registration, logistics, administration, etc)",2.8125,16
 "20251209_SBSRT","For the topics covered the course was",1.25,16
 "20251209_SBSRT","The difficulty of the course was appropriate for my knowledge",1.625,16
@@ -484,7 +484,7 @@
 "20251209_SBSRT","The exercises were useful and well integrated into the course",2.625,16
 "20251209_SBSRT","Please tell us your overall rating for the entire course",4.1875,16
 "20251209_SBSRT","The course met my expectations",2.5625,16
-"20251209_SBSRT","Have you used the tool(s)/resource(s) covered in the course before?",2.125,16
+"20251209_SBSRT","Would you recommend the course?",1.9375,16
 "20251212_CVANA","The course was well organised (communication, registration, logistics, administration, etc)",2.45454545454545,11
 "20251212_CVANA","For the topics covered the course was",1.27272727272727,11
 "20251212_CVANA","The difficulty of the course was appropriate for my knowledge",1.45454545454545,11
@@ -493,7 +493,7 @@
 "20251212_CVANA","The exercises were useful and well integrated into the course",2.36363636363636,11
 "20251212_CVANA","Please tell us your overall rating for the entire course",3.18181818181818,11
 "20251212_CVANA","The course met my expectations",2.18181818181818,11
-"20251212_CVANA","Have you used the tool(s)/resource(s) covered in the course before?",2.90909090909091,11
+"20251212_CVANA","Would you recommend the course?",1.54545454545455,11
 "20251215_DATVS","The course was well organised (communication, registration, logistics, administration, etc)",2.76923076923077,13
 "20251215_DATVS","For the topics covered the course was",1.38461538461538,13
 "20251215_DATVS","The difficulty of the course was appropriate for my knowledge",1.15384615384615,13
@@ -502,4 +502,4 @@
 "20251215_DATVS","The exercises were useful and well integrated into the course",2.23076923076923,13
 "20251215_DATVS","Please tell us your overall rating for the entire course",3.61538461538462,13
 "20251215_DATVS","The course met my expectations",2.23076923076923,13
-"20251215_DATVS","Have you used the tool(s)/resource(s) covered in the course before?",2.76923076923077,13
+"20251215_DATVS","Would you recommend the course?",1.84615384615385,13

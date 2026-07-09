@@ -227,6 +227,96 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
     suffix <- switch(as.character(n %% 10), "1" = "st", "2" = "nd", "3" = "rd", "th")
     paste0(n, suffix)
   }
+
+  percentile_distribution_plot <- function(reference_values, course_average, score_limits = NULL) {
+    clean_reference <- as.numeric(reference_values)
+    clean_reference <- clean_reference[!is.na(clean_reference)]
+
+    if (length(clean_reference) == 0 || is.na(course_average)) {
+      return(NULL)
+    }
+
+    x_min <- min(clean_reference, na.rm = TRUE)
+    x_max <- max(clean_reference, na.rm = TRUE)
+
+    if (!is.null(score_limits) && length(score_limits) == 2 && all(!is.na(score_limits))) {
+      x_min <- min(x_min, score_limits[1])
+      x_max <- max(x_max, score_limits[2])
+    }
+
+    if (!is.finite(x_min) || !is.finite(x_max)) {
+      return(NULL)
+    }
+
+    # Keep a small visual margin so markers are not clipped.
+    if (x_min == x_max) {
+      x_min <- x_min - 0.5
+      x_max <- x_max + 0.5
+    }
+
+    plot_data <- data.frame(score = clean_reference)
+
+    if (length(clean_reference) < 5) {
+      p <- ggplot(plot_data, aes(x = score, y = 0)) +
+        geom_point(color = "#9AA0A6", alpha = 0.8, size = 2, position = position_jitter(height = 0.03, width = 0)) +
+        geom_vline(xintercept = course_average, color = "#C62828", linewidth = 1) +
+        annotate(
+          "text",
+          x = course_average,
+          y = 0.12,
+          label = sprintf("Score %.2f", course_average),
+          color = "#C62828",
+          hjust = 0.5,
+          vjust = 0,
+          size = 3.2
+        ) +
+        scale_x_continuous(limits = c(x_min, x_max)) +
+        scale_y_continuous(limits = c(-0.08, 0.18), breaks = NULL) +
+        labs(x = "Reference average scores", y = NULL) +
+        theme_minimal() +
+        theme(
+          axis.title.y = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks.y = element_blank(),
+          panel.grid.major.y = element_blank(),
+          panel.grid.minor = element_blank(),
+          axis.title.x = element_text(size = 10),
+          axis.text.x = element_text(size = 9),
+          plot.margin = margin(2, 4, 2, 4)
+        )
+      return(p)
+    }
+
+    p <- ggplot(plot_data, aes(x = score)) +
+      geom_histogram(aes(y = after_stat(density)), bins = 16, fill = "#DCEAF7", color = "white", linewidth = 0.4) +
+      geom_density(color = "#7A98B8", linewidth = 0.6, adjust = 1.1) +
+      geom_vline(xintercept = course_average, color = "#C62828", linewidth = 1) +
+      annotate(
+        "text",
+        x = course_average,
+        y = Inf,
+        label = sprintf("Score %.2f", course_average),
+        color = "#C62828",
+        hjust = 0.5,
+        vjust = 1.6,
+        size = 3.2
+      ) +
+      scale_x_continuous(limits = c(x_min, x_max)) +
+      labs(x = "Reference average scores", y = NULL) +
+      theme_minimal() +
+      theme(
+        axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.title.x = element_text(size = 10),
+        axis.text.x = element_text(size = 9),
+        plot.margin = margin(2, 4, 2, 4)
+      )
+
+    p
+  }
   
   # Helper to add content sections
   add_content <- function(element) {
@@ -335,6 +425,24 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
                 as.character(reference_year),
                 "."
               ))
+
+              score_limits <- NULL
+              if (!is.null(score_map) && length(score_map) > 0) {
+                score_limits <- range(unname(score_map), na.rm = TRUE)
+              }
+
+              distribution_plot <- percentile_distribution_plot(
+                reference_values = reference_values,
+                course_average = course_average,
+                score_limits = score_limits
+              )
+
+              if (!is.null(distribution_plot)) {
+                add_content(tags$img(
+                  src = ggplot_to_base64(distribution_plot, width = 4.2, height = 1.6, dpi = 170),
+                  style = "max-width: 520px; width: 100%; height: auto; margin-top: 6px;"
+                ))
+              }
             }
           }
           

@@ -1,0 +1,6 @@
+{
+  "description": "Question metadata January 2026",
+  "base_metadata": "base/202601_questions.json",
+  "score_reference": "combined_feedback/reference_scores_2026.csv",
+  "reference_year": 2026
+}

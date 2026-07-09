@@ -157,12 +157,17 @@
           "variable_name": "course_recommendation",
           "question_text": "Would you recommend the course?",
           "question_type": "multiple_choice",
-          "is_ordinal": false,
+          "is_ordinal": true,
           "possible_answers": [
             "Yes",
-            "No",
-            "Maybe"
-          ]
+            "Maybe",
+            "No"
+          ],
+          "answer_scores": {
+            "Yes": 2,
+            "No": 0,
+            "Maybe": 1
+          }
         },
         {
           "variable_name": "course_strengths",
@@ -208,14 +213,7 @@
             "Never - aware of them, but not used them",
             "Never - used other service",
             "Never - unaware of them"
-          ],
-          "answer_scores": {
-            "Frequently (weekly to daily)": 4,
-            "Occasionally (once in a while to monthly)": 3,
-            "Never - aware of them, but not used them": 2,
-            "Never - used other service": 1,
-            "Never - unaware of them": 0
-          }
+          ]
         },
         {
           "variable_name": "tool_usage_after",
