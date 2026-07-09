@@ -70,6 +70,45 @@ generate_feedback_reports(
 
 See `analysis_feedback_2025.qmd` for a complete example.
 
-## Adding New Metadata Versions
+## Metadata: Single Source of Truth
 
-Add new JSON files to the `app/metadata/` folder. The app will automatically detect and list them.
+Question definitions now live in one base file:
+
+- `app/metadata/base/202601_questions.json`
+
+Version files in `app/metadata/` are now lightweight profiles that can override reference settings and control visibility.
+
+### Profile schema
+
+```json
+{
+  "description": "Question metadata January 2026 without open questions",
+  "base_metadata": "base/202601_questions.json",
+  "score_reference": "combined_feedback/reference_scores_2025.csv",
+  "reference_year": 2025,
+  "visibility": {
+    "exclude_sections": ["Future Courses"],
+    "exclude_questions": ["course_strengths"],
+    "include_sections": ["Global appreciation", "Resources"],
+    "include_questions": ["overall_rating"],
+    "drop_empty_sections": true
+  },
+  "question_overrides": {
+    "overall_rating": {
+      "question_text": "Please tell us your overall rating"
+    }
+  },
+  "section_overrides": {
+    "Resources": {
+      "description": "Updated section description"
+    }
+  },
+  "section_order": ["Global appreciation", "Resources", "Teaching"]
+}
+```
+
+### How to maintain metadata
+
+1. Edit shared questions in `app/metadata/base/202601_questions.json`.
+2. Keep variant files in `app/metadata/` small by only adding profile-specific visibility/override settings.
+3. The app and R helper functions automatically resolve profiles through `R/metadata_utils.R`.

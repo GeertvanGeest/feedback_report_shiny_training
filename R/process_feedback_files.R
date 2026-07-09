@@ -1,3 +1,14 @@
+# Load shared metadata resolver when this file is sourced directly.
+if (!exists("resolve_question_metadata", mode = "function")) {
+  if (file.exists("R/metadata_utils.R")) {
+    source("R/metadata_utils.R")
+  } else if (file.exists("metadata_utils.R")) {
+    source("metadata_utils.R")
+  } else {
+    stop("Could not locate metadata utilities (R/metadata_utils.R)")
+  }
+}
+
 #' Helper function to find best matching question from JSON
 #' @param header Character. Column header from Excel file
 #' @param questions Character vector. Expected questions from JSON
@@ -100,7 +111,7 @@ process_feedback_files <- function(directory, json_path, similarity_threshold = 
   require(stringdist)
   
   # Read JSON metadata
-  metadata <- jsonlite::fromJSON(json_path)
+  metadata <- resolve_question_metadata(json_path)
   
   # Extract all expected question texts from the JSON
   # The sections contain questions as nested data frames
@@ -262,7 +273,7 @@ create_reference_scores_csv <- function(combined_feedback_file, json_path, outpu
   require(jsonlite)
   require(dplyr)
 
-  metadata <- jsonlite::fromJSON(json_path)
+  metadata <- resolve_question_metadata(json_path)
 
   # Align combined feedback headers with metadata question texts.
   expected_questions <- do.call(rbind, lapply(metadata$sections$questions, function(q) {
@@ -379,7 +390,7 @@ generate_feedback_reports <- function(directory, json_path, similarity_threshold
   source(here::here("app", "generate_html_report.R"))
 
   # Read JSON metadata
-  metadata <- jsonlite::fromJSON(json_path)
+  metadata <- resolve_question_metadata(json_path)
 
   # Extract all expected question texts from the JSON
   expected_questions <- do.call(rbind, lapply(metadata$sections$questions, function(q) {

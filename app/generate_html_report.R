@@ -11,6 +11,7 @@ library(here)
 
 # Source plot functions using here package for robust path resolution
 source(here::here("app", "plot_functions.R"))
+source(here::here("R", "metadata_utils.R"))
 
 # Function to convert ggplot to base64 PNG
 ggplot_to_base64 <- function(plot, width = 6, height = 4.5, dpi = 150) {
@@ -71,7 +72,7 @@ generate_html_report <- function(feedback_file, metadata_file, original_filename
   
   # Load data
   feedback_results <- read_xlsx(feedback_file)
-  question_metadata <- fromJSON(metadata_file)
+  question_metadata <- resolve_question_metadata(metadata_file)
 
   # Load reference settings from metadata (single source of truth).
   reference_scores <- NULL
